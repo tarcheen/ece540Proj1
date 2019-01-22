@@ -26,17 +26,36 @@ module mfp_nexys4_ddr(
                         inout  	   [ 8          :1] JB,
                         input                   	UART_TXD_IN);
 
-  // Press btnCpuReset to reset the processor. 
-        
-  wire clk_out; 
-  wire tck_in, tck;
-  
-  clk_wiz_0 clk_wiz_0(.clk_in1(CLK100MHZ), .clk_out1(clk_out));
-  IBUF IBUF1(.O(tck_in),.I(JB[4]));
-  BUFG BUFG1(.O(tck), .I(tck_in));
+	// Press btnCpuReset to reset the processor. 
+		
+	wire clk_out; 
+	wire tck_in, tck;
 
-  mfp_sys mfp_sys(
-			        .SI_Reset_N(CPU_RESETN),
+	clk_wiz_0 clk_wiz_0(.clk_in1(CLK100MHZ), .clk_out1(clk_out));
+	IBUF IBUF1(.O(tck_in),.I(JB[4]));
+	BUFG BUFG1(.O(tck), .I(tck_in));
+  
+	//signals use for debouncing
+	wire CPU_RESETN_DB;
+	wire BTNU_DB;
+	wire BTND_DB;
+	wire BTNL_DB;
+	wire BTNC_DB;
+	wire BTNR_DB;
+	wire [`MFP_N_SW-1 :0] SW_DB;
+	
+	// instance of debounce
+	debounce debounce(
+		.clk(clk_out),
+		.pbtn_in({CPU_RESETN,BTNU,BTND,BTNL,BTNC,BTNR}),
+		.switch_in(SW),
+		.pbtn_db({CPU_RESETN_DB,BTNU_DB,BTND_DB,BTNL_DB,BTNC_DB,BTNR_DB}),
+		.swtch_db(SW_DB)
+	);
+
+	mfp_sys mfp_sys(
+			        // .SI_Reset_N(CPU_RESETN),
+			        .SI_Reset_N(CPU_RESETN_DB),
                     .SI_ClkIn(clk_out),
                     .HADDR(),
                     .HRDATA(),
@@ -50,8 +69,10 @@ module mfp_nexys4_ddr(
                     .EJ_TCK(tck),
                     .SI_ColdReset_N(JB[8]),
                     .EJ_DINT(1'b0),
-                    .IO_Switch(SW),
-                    .IO_PB({BTNU, BTND, BTNL, BTNC, BTNR}),
+                    // .IO_Switch(SW),
+                    .IO_Switch(SW_DB),
+                    // .IO_PB({BTNU, BTND, BTNL, BTNC, BTNR}),
+                    .IO_PB({BTNU_DB, BTND_DB, BTNL_DB, BTNC_DB, BTNR_DB}),
                     .IO_LED(LED),
                     .IO_AN(AN),
                     .IO_CA(CA),
