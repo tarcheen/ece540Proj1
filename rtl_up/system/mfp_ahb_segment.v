@@ -1,6 +1,6 @@
-// mfp_ahb_gpio.v
+// mfp_ahb_segment.v
 //
-// General-purpose I/O module for Altera's DE2-115 and 
+// 7 segment module for Altera's DE2-115 and 
 // Digilent's (Xilinx) Nexys4-DDR board
 
 

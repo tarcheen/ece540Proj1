@@ -28,6 +28,12 @@ module mfp_sys(
 					output [`MFP_N_SEG-1:0]	IO_AN,
 					output 					IO_CA, IO_CB, IO_CC, IO_CD, IO_CE, IO_CF, IO_CG,
 					output 					IO_DP,
+					
+					input 	   [31 :0] 		PORT_BOTINFO,
+					input       			PORT_BOTUPDT,
+					output     [7 :0] 		PORT_BOTCTRL,
+					output 	   				PORT_INTACK,
+					
                     input                   UART_RX);
 
 
@@ -313,6 +319,12 @@ module mfp_sys(
         .IO_CF            		( 	IO_CF          			),
         .IO_CG            		( 	IO_CG          			),
         .IO_DP            		( 	IO_DP          			),
+		
+        .PORT_BOTINFO     		( PORT_BOTINFO    			),
+        .PORT_BOTUPDT     		( PORT_BOTUPDT    			),
+        .PORT_BOTCTRL     		( PORT_BOTCTRL    			),
+        .PORT_INTACK      		( PORT_INTACK     			),
+		
         .UART_RX                (   UART_RX                 ), 
         .MFP_Reset_serialload   (   MFP_Reset_serialload    )
     );
