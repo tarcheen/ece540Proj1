@@ -124,6 +124,7 @@ module mfp_nexys4_ddr(
 	//instance of icon
 	//decides when to show icon on screen
 	icon icon(
+		.clk(clk_out_75MHZ),
 		.LocX_reg(LocX_reg),
 		.LocY_reg(LocY_reg),
 		.BotInfo_reg(BotInfo_reg),
