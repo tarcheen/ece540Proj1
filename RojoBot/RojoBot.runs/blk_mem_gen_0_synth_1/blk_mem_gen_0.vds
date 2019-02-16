@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2018.2.1 (64-bit)
+# SW Build 2288692 on Thu Jul 26 18:24:02 MDT 2018
+# IP Build 2289599 on Thu Jul 26 21:09:20 MDT 2018
+# Start of session at: Sat Feb 16 15:25:23 2019
+# Process ID: 5984
+# Current directory: N:/Downloads/ECE540/WorkingDirectory/RojoBot/RojoBot.runs/blk_mem_gen_0_synth_1
+# Command line: vivado.exe -log blk_mem_gen_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source blk_mem_gen_0.tcl
+# Log file: N:/Downloads/ECE540/WorkingDirectory/RojoBot/RojoBot.runs/blk_mem_gen_0_synth_1/blk_mem_gen_0.vds
+# Journal file: N:/Downloads/ECE540/WorkingDirectory/RojoBot/RojoBot.runs/blk_mem_gen_0_synth_1\vivado.jou
+#-----------------------------------------------------------
+source blk_mem_gen_0.tcl -notrace
+INFO: [IP_Flow 19-4838] Using cached IP synthesis design for IP blk_mem_gen_0, cache-ID = 750fb95b0dca1040.
+INFO: [Common 17-206] Exiting Vivado at Sat Feb 16 15:25:33 2019...
