@@ -57,6 +57,7 @@
 //----------------------------------------------------------------------------
 // clk_out1____50.000______0.000______50.0______150.541_____99.281
 // clk_out2____75.000______0.000______50.0______138.050_____99.281
+// clk_out3____25.000______0.000______50.0______174.188_____99.281
 //
 //----------------------------------------------------------------------------
 // Input Clock   Freq (MHz)    Input Jitter (UI)
@@ -74,6 +75,7 @@
     // Clock out ports
     .clk_out1(clk_out1),     // output clk_out1
     .clk_out2(clk_out2),     // output clk_out2
+    .clk_out3(clk_out3),     // output clk_out3
    // Clock in ports
     .clk_in1(clk_in1));      // input clk_in1
 // INST_TAG_END ------ End INSTANTIATION Template ---------
