@@ -15,7 +15,7 @@
 //	 Inputs:
 //			video_on            - indicates blanking interval or not
 //			[1:0] world_pixel	- based on encoding generate one of the color
-//			[1:0] icon_pixel		- based on encoding generate one of the color
+//			[11 :0]	op_pixel	- based on encoding generate one of the color
 //	 Outputs:
 //			[3:0] red	- red 	color value
 //			[3:0] green	- green color value
@@ -25,8 +25,8 @@
 
 module colorizer(
 	input				video_on,
-	input		[1 :0]	world_pixel,
-	input		[1 :0]	icon_pixel,
+	input		[11 :0]	op_pixel,
+	input				blank_disp,
 	output	reg	[3 :0]	red, green, blue
 );
 
@@ -43,88 +43,19 @@ begin
 		blue 	= 4'b0000;
 	end
 	//else we should decide between world or icon
-	else
+	else if(blank_disp == 1'b0)
 	begin
 		//if icon_pixel is 00 then comes from 
 		//world pixel
-		if(icon_pixel == 2'b00)
-		begin
-			case(world_pixel)
-				//background, in our case white
-				//FIXME can we configure this via software
-				2'b00:
-				begin
-					red 	= 4'b1111;
-					green 	= 4'b1111;
-					blue 	= 4'b1111;
-				end
-				
-				//blck line
-				2'b01:
-				begin
-					red 	= 4'b0000;
-					green 	= 4'b0000;
-					blue 	= 4'b0000;
-				end
-				
-				//FIXME can we make this configurable
-				//like from a register or something
-				//obstruction, red color
-				2'b10:
-				begin
-					red 	= 4'b1111;
-					green 	= 4'b0000;
-					blue 	= 4'b0000;
-				end
-				
-				default:
-				begin
-					red 	= 4'b0000;
-					green 	= 4'b0000;
-					blue 	= 4'b0000;
-				end
-			endcase
-		end
-		//otherwise get value from ICON
-		else
-		begin
-			case(icon_pixel)
-				//FIXME can we do it from register
-				//icon color 1, lets say yellow
-				2'b01:
-				begin
-					red 	= 4'b1111;
-					green 	= 4'b1111;
-					blue 	= 4'b0000;
-				end
-				
-				//FIXME can we do it from register
-				//icon color 2, lets say green
-				2'b10:
-				begin
-					red 	= 4'b0000;
-					green 	= 4'b1111;
-					blue 	= 4'b0000;
-				end
-				
-				//FIXME can we do it from register
-				//icon color 3, lets say blue
-				2'b11:
-				begin
-					red 	= 4'b0000;
-					green 	= 4'b0000;
-					blue 	= 4'b1111;
-				end
-				
-				//should never come here
-				default:
-				begin
-					red 	= 4'b0000;
-					green 	= 4'b0000;
-					blue 	= 4'b0000;
-				end
-			endcase
-		end
+		red = op_pixel[11:8];
+		green = op_pixel[7:4];
+		blue = op_pixel[3:0];
+	end
+	else
+	begin
+		red = 4'b0;
+		green = 4'b0;
+		blue = 4'b0;
 	end
 end
 

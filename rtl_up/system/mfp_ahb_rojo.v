@@ -42,11 +42,15 @@ module mfp_ahb_rojo(
 	// overall write enable signal
 	assign we = (HTRANS_d != `HTRANS_IDLE) & HSEL_d & HWRITE_d;
 
+	//this is for writig some value to rojobots register
     always @(posedge HCLK or negedge HRESETn) begin
+		//on reset
 		if (~HRESETn) begin
 			PORT_BOTCTRL <= 8'h0;  
 			PORT_INTACK <= 1'b0;  
-		end 
+		end
+		//based on address decide which register to update
+		//which gets bubbled up, all the way to top
 		else if (we) begin
 			case (HADDR_d)
 				`PORT_BOTCTRL_IONUM: PORT_BOTCTRL <= HWDATA[7:0];
@@ -55,6 +59,7 @@ module mfp_ahb_rojo(
 		end
 	end
     
+	//this is for reding some values from rojobots register
 	always @(posedge HCLK or negedge HRESETn) begin
 		if (~HRESETn)
 			HRDATA <= 32'h0;

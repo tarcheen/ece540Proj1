@@ -33,6 +33,9 @@ module icon(
 	output	reg	[1 :0]	icon_pixel
 );
 
+//FIXME, can we make parameterised design
+//where size of icon comes from a parameter
+
 reg [11:0] scaled_row;
 reg [11:0] scaled_column;
 
@@ -41,7 +44,7 @@ reg  [3:0] addr_icon;
 reg  [1:0] addr_icon_row;
 reg  [1:0] addr_icon_column;
 
-//these arer input data for the mux
+//these are input data for the mux
 //one of them will be choosen based on orientation
 wire  [1:0] icon_data_0;
 wire  [1:0] icon_data_1;
@@ -52,48 +55,64 @@ wire  [1:0] icon_data_5;
 wire  [1:0] icon_data_6;
 wire  [1:0] icon_data_7;
 
+//instantiation of block memory
+//which stores icons pixel for orientation 0
 blk_mem_gen_0 icon_0(
 	.addra(addr_icon)
 	,.clka(clk)
 	,.douta(icon_data_0)
 	);
-	
+
+//instantiation of block memory
+//which stores icons pixel for orientation 45	
 blk_mem_gen_1 icon_1(
 	.addra(addr_icon)
 	,.clka(clk)
 	,.douta(icon_data_1)
 	);
 
+	//instantiation of block memory
+//which stores icons pixel for orientation 90
 blk_mem_gen_2 icon_2(
 	.addra(addr_icon)
 	,.clka(clk)
 	,.douta(icon_data_2)
 	);
 	
+//instantiation of block memory
+//which stores icons pixel for orientation 135
 blk_mem_gen_3 icon_3(
 	.addra(addr_icon)
 	,.clka(clk)
 	,.douta(icon_data_3)
 	);
 	
+//instantiation of block memory
+//which stores icons pixel for orientation 180
 blk_mem_gen_4 icon_4(
 	.addra(addr_icon)
 	,.clka(clk)
 	,.douta(icon_data_4)
 	);
 
+//instantiation of block memory
+//which stores icons pixel for orientation 225
 blk_mem_gen_5 icon_5(
 	.addra(addr_icon)
 	,.clka(clk)
 	,.douta(icon_data_5)
 	);
 
+//instantiation of block memory
+//which stores icons pixel for orientation 270
 blk_mem_gen_6 icon_6(
 	.addra(addr_icon)
 	,.clka(clk)
 	,.douta(icon_data_6)
 	);
 
+//instantiation of block memory
+//which stores icons pixel for orientation 315
 blk_mem_gen_7 icon_7(
 	.addra(addr_icon)
 	,.clka(clk)
@@ -110,6 +129,14 @@ begin
 	//divide by 6
 	scaled_row = pixel_row/6;
 	
+	//FIXME, can we come up with some useful constructs
+	//to automise this 
+	
+	//we ae using 4x4 area in 128x128 space
+	//we are displaying icon from top left
+	//update the value of row and column
+	//based on that we will compute the address from which we will get the pixel 
+	//of icon
 	if(scaled_column[7:0] == LocX_reg)
 	begin
 		addr_icon_column = 2'b00;

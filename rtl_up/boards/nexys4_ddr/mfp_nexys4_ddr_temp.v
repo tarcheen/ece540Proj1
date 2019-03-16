@@ -33,15 +33,6 @@ module mfp_nexys4_ddr(
 						output     					VGA_HS,
 						output     					VGA_VS,
 						
-						//camera module
-						output cam_xck,
-						output cam_scl,
-						inout cam_sda,
-						input [7:0] cam_data,
-						input cam_vs,
-						input cam_hs,
-						input cam_pck,
-						
                         inout  	   [ 8          :1] JB,
                         input                   	UART_TXD_IN);
 
@@ -49,12 +40,9 @@ module mfp_nexys4_ddr(
 		
 	wire clk_out; 
 	//clock for VGA
-	wire clk_out_75MHZ;
-	//clock for camera module
-	wire clk_out_25MHZ; 
+	wire clk_out_75MHZ; 
 	//video_on signal tells us what to do at blanking time
 	wire video_on;
-	wire blank_disp;
 	//genetrated from DTG, consumed by scalar block
 	wire [11:0] pixel_row;
 	wire [11:0] pixel_column;
@@ -64,21 +52,14 @@ module mfp_nexys4_ddr(
 	reg [11:0] image_data;
 	wire [11:0] image_data_0;
 	wire [11:0] image_data_1;
+	wire [11:0] image_data_2;
 	wire [11:0] image_data_3;
-	wire image_data_3_lsb;
+	
 	
 	wire tck_in, tck;
-	
-	wire [16:0] capture_addr;
-	wire [12:0] capture_data;
-	wire capture_we;
-	
-	//
-	wire done_config; //Indicator of configuration status
 
 	//changes in clock wizard to add clock out of 75MHz
-	clk_wiz_0 clk_wiz_0(.clk_in1(CLK100MHZ), .clk_out1(clk_out), .clk_out2(clk_out_75MHZ)
-										   , .clk_out3(clk_out_25MHZ));
+	clk_wiz_0 clk_wiz_0(.clk_in1(CLK100MHZ), .clk_out1(clk_out),.clk_out2(clk_out_75MHZ));
 	IBUF IBUF1(.O(tck_in),.I(JB[4]));
 	BUFG BUFG1(.O(tck), .I(tck_in));
   
@@ -116,7 +97,6 @@ module mfp_nexys4_ddr(
 	//which actually takes care of coloring
 	colorizer colorizer(
 		.video_on(video_on),
-		.blank_disp(blank_disp),
 		.op_pixel(image_data),
 		.red(VGA_R),
 		.green(VGA_G),
@@ -131,37 +111,24 @@ module mfp_nexys4_ddr(
 		.video_on(video_on),
 		.pixel_row(pixel_row),
 		.pixel_column(pixel_column),
-		.image_addr(image_disp_addr),
-		.blank_disp(blank_disp)
+		.image_addr(image_disp_addr)
 	);
 	
 	blk_mem_gen_0 camera_buffer (
-		.clka(cam_pck),    			// input wire clka
-		.wea(capture_we),      		// input wire [0 : 0] wea
-		.addra(capture_addr),  		// input wire [16 : 0] addra
-		.dina(capture_data),    	// input wire [11 : 0] dina
-		.clkb(clk_out_75MHZ),    	// input wire clka
-		.addrb(image_disp_addr),  	// input wire [16 : 0] addra
-		.doutb(image_data_0)  		// output wire [11 : 0] douta
+		.clka(clk_out_75MHZ),    	// input wire clka
+		.wea(1'b0),      			// input wire [0 : 0] wea
+		.addra(image_disp_addr),  	// input wire [18 : 0] addra
+		.dina(12'b0),    				// input wire [11 : 0] dina
+		.douta(image_data_0)  				// output wire [11 : 0] douta
 	);
 	
 	blk_mem_gen_1 image_1 (
 		.clka(clk_out_75MHZ),    	// input wire clka
 		.wea(1'b0),      			// input wire [0 : 0] wea
-		.addra(image_disp_addr),  	// input wire [16 : 0] addra
-		.dina(12'b0),    			// input wire [11 : 0] dina
-		.douta(image_data_1)  	// output wire [11 : 0] douta
+		.addra(image_disp_addr),  	// input wire [18 : 0] addra
+		.dina(12'b0),    				// input wire [11 : 0] dina
+		.douta(image_data_1)  		// output wire [11 : 0] douta
 	);
-	
-	blk_mem_gen_3 bw_image (
-		.clka(clk_out_75MHZ),    	// input wire clka
-		.wea(1'b0),      			// input wire [0 : 0] wea
-		.addra(image_disp_addr),  	// input wire [16 : 0] addra
-		.dina(1'b0),    			// input wire  dina
-		.douta(image_data_3_lsb)  	// output wire  douta
-	);
-
-	assign image_data_3 = {11'b00001111111,image_data_3_lsb};
 	
 	always@(*)
 	begin
@@ -170,29 +137,10 @@ module mfp_nexys4_ddr(
 				image_data = image_data_0;
 			2'b01:
 				image_data = image_data_1;
-			2'b10:
-				image_data = image_data_3;
 			default:
 				image_data = image_data_1;
 		endcase
 	end
-	
-	camera_configure CCONF(
-        .clk(clk_out_25MHZ),
-        .start(SW_DB[15]),
-        .sioc(cam_scl),
-        .siod(cam_sda),
-        .done(done_config)
-        );
-		
-	ov7670_capture_verilog cap1(
-        .pclk(cam_pck),
-        .vsync(cam_vs),
-        .href(cam_hs),
-        .d(cam_data),
-        .addr(capture_addr),
-        .dout(capture_data),
-        .we(capture_we));
 	
 	//instance of world_map
 	//dual port memory

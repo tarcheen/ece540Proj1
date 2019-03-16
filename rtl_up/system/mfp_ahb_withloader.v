@@ -27,11 +27,6 @@ module mfp_ahb_withloader (
 	output 						IO_CA, IO_CB, IO_CC, IO_CD, IO_CE, IO_CF, IO_CG,
 	output 						IO_DP,
 	
-	input 	   [31 :0] 			 PORT_BOTINFO,
-    input       			 	 PORT_BOTUPDT,
-	output     [7  :0] 			 PORT_BOTCTRL,
-	output 	   					 PORT_INTACK,
-
 	// for serial loading of memory using uart
     input         UART_RX,
 
@@ -141,11 +136,8 @@ module mfp_ahb_withloader (
         .IO_CE            ( IO_CE          	),
         .IO_CF            ( IO_CF          	),
         .IO_CG            ( IO_CG          	),
-        .IO_DP            ( IO_DP          	),
-        .PORT_BOTINFO     ( PORT_BOTINFO    ),
-        .PORT_BOTUPDT     ( PORT_BOTUPDT    ),
-        .PORT_BOTCTRL     ( PORT_BOTCTRL    ),
-        .PORT_INTACK      ( PORT_INTACK     )
+        .IO_DP            ( IO_DP          	)
+
     );
 
 endmodule
