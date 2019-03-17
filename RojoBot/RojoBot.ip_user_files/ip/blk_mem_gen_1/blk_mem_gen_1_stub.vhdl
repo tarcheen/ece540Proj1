@@ -1,7 +1,7 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.2.1 (win64) Build 2288692 Thu Jul 26 18:24:02 MDT 2018
--- Date        : Fri Mar 15 19:37:53 2019
+-- Date        : Fri Mar 15 22:39:11 2019
 -- Host        : caplab05 running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode synth_stub
 --               N:/Downloads/ECE540/WorkingDirectory/RojoBot/RojoBot.srcs/sources_1/ip/blk_mem_gen_1/blk_mem_gen_1_stub.vhdl
@@ -18,7 +18,9 @@ entity blk_mem_gen_1 is
     wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 16 downto 0 );
     dina : in STD_LOGIC_VECTOR ( 11 downto 0 );
-    douta : out STD_LOGIC_VECTOR ( 11 downto 0 )
+    clkb : in STD_LOGIC;
+    addrb : in STD_LOGIC_VECTOR ( 16 downto 0 );
+    doutb : out STD_LOGIC_VECTOR ( 11 downto 0 )
   );
 
 end blk_mem_gen_1;
@@ -27,7 +29,7 @@ architecture stub of blk_mem_gen_1 is
 attribute syn_black_box : boolean;
 attribute black_box_pad_pin : string;
 attribute syn_black_box of stub : architecture is true;
-attribute black_box_pad_pin of stub : architecture is "clka,wea[0:0],addra[16:0],dina[11:0],douta[11:0]";
+attribute black_box_pad_pin of stub : architecture is "clka,wea[0:0],addra[16:0],dina[11:0],clkb,addrb[16:0],doutb[11:0]";
 attribute x_core_info : string;
 attribute x_core_info of stub : architecture is "blk_mem_gen_v8_4_1,Vivado 2018.2.1";
 begin
