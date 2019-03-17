@@ -100,6 +100,7 @@ module mfp_nexys4_ddr(
 	wire [16:0] capture_addr;
 	wire [11:0] capture_data;
 	wire capture_we;
+	wire capture_we_inter;
 	reg capture_we_1;
 	reg capture_we_2;
 	//useful for writing to image
@@ -158,10 +159,10 @@ module mfp_nexys4_ddr(
 	
 	//FIXME remove these assign statemenets
 	//when we connect the nets to idividual blocks
-	assign photo_done = 1'b1;
+	// assign photo_done = 1'b1;
 	assign filter_done = 1'b1;
 	assign min_max_done = 1'b1;
-	assign capture_we = 1'b0;
+	// assign capture_we = 1'b0;
 	assign filtered_we = 1'b0;
 	assign filter_write_addr = 0;
 	assign filter_write_data = 1'b0;
@@ -195,10 +196,10 @@ module mfp_nexys4_ddr(
 	blk_mem_gen_1 image_1 (
 		.clka(cam_pck),    			// input wire clka
 		.wea(capture_we_2),      	// input wire [0 : 0] wea
-		.addra(filter_write_addr),  // input wire [16 : 0] addra
+		.addra(capture_addr),  		// input wire [16 : 0] addra
 		.dina(capture_data),    	// input wire [11 : 0] dina
 		.clkb(clk_out_75MHZ),    	// input wire clka
-		.addrb(image_0_read_addr),	// input wire [16 : 0] addra
+		.addrb(image_1_read_addr),	// input wire [16 : 0] addra
 		.doutb(image_data_1)  		// output wire [11 : 0] douta
 	);
 	
@@ -227,6 +228,8 @@ module mfp_nexys4_ddr(
 	
 	always@(image_write_sel,capture_we)
 	begin
+		// capture_we_1 = capture_we;
+		// capture_we_2 = capture_we;
 		if(image_write_sel == 1'b0)
 		begin
 			capture_we_1 = capture_we;
@@ -321,17 +324,28 @@ module mfp_nexys4_ddr(
         .d(cam_data),
         .addr(capture_addr),
         .dout(capture_data),
-        .we());//FIXME
+        .we(capture_we_inter));//FIXME
 	
 	//my fsm block
 	//this block is the main executor
 	//clock block of moore design
 	always@(posedge clk_out_75MHZ)
 	begin
-		if(CPU_RESETN_DB)
+		if(CPU_RESETN_DB == 1'b0)
 			curr_state <= SM_RESET;
 		else
 			curr_state <= next_state;
+	end
+	
+	//toggle flipflop
+	always@(posedge clk_out_75MHZ)
+	begin
+		if(CPU_RESETN_DB == 1'b0)
+			image_sel <= 1'b0;
+		else if(curr_state == SM_CHANGE_DISP_IMAGE)
+			image_sel <= ~image_sel;
+		else
+			image_sel <= image_sel;
 	end
 	
 	//next state logic
@@ -409,65 +423,72 @@ module mfp_nexys4_ddr(
 		case(curr_state)
 			SM_RESET:
 			begin
-				image_sel = 0;
+				photo_start = 0;
+				photo_ack = 0;
 			end
 			
 			SM_TAKE_PHOTO_START:
 			begin
-				image_sel = 0;
+				photo_start = 1;
+				photo_ack = 0;
 			end
 			
 			SM_TAKE_PHOTO_EXEC:
 			begin
-				image_sel = 0;
+				photo_start = 1;
+				photo_ack = 0;
 			end
 			
 			SM_TAKE_PHOTO_DONE:
 			begin
-				image_sel = 0;
+				photo_start = 0;
+				photo_ack = 1;
 			end
 			
 			SM_FILTER_IMAGE_START:
 			begin
-				image_sel = 0;
 			end
 			
 			SM_FILTER_IMAGE_EXEC:
 			begin
-				image_sel = 0;
 			end
 			
 			SM_FILTER_IMAGE_DONE:
 			begin
-				image_sel = 0;
 			end
 			
 			SM_CAL_MIN_MAX_START:
 			begin
-				image_sel = 0;
 			end
 			
 			SM_CAL_MIN_MAX_EXEC:
 			begin
-				image_sel = 0;
 			end
 			
 			SM_CAL_MIN_MAX_DONE:
 			begin
-				image_sel = 0;				
 			end
 			
 			SM_CHANGE_DISP_IMAGE:
 			begin
-				image_sel = 0;				
 			end
 			
 			default:
 			begin
-				image_sel = 0;				
 			end
 		endcase
 	end
+	
+	photo_sm photo_sm(
+		.reset(CPU_RESETN_DB),
+		.start(photo_start),
+		.clk(cam_pck),
+		.ack(photo_ack),
+		.vsync(cam_vs),
+		.wen(capture_we_inter),
+		.wen_out(capture_we),
+		.done(photo_done)
+	);
 	
 	mfp_sys mfp_sys(
 			        // .SI_Reset_N(CPU_RESETN),
