@@ -82,7 +82,6 @@ module mfp_nexys4_ddr(
 	
 	//useful for writing to image
 	wire image_write_sel;
-	reg image_sel_next;
 	
 	/////////////////////////////////////////////
 	
@@ -297,9 +296,11 @@ module mfp_nexys4_ddr(
     localparam SM_TAKE_PHOTO_START = 1;
     localparam SM_TAKE_PHOTO_EXEC = 2;
     localparam SM_TAKE_PHOTO_DONE = 3;
-    localparam SM_CHANGE_DISP_IMAGE = 4;
+    localparam SM_TAKE_PHOTO_ACK = 4;
+    localparam SM_CHANGE_DISP_IMAGE_0 = 5;
+    localparam SM_CHANGE_DISP_IMAGE_1 = 6;
 	
-	reg [31:0] delay_counter;
+	reg [17:0] delay_counter;
 	
 	
 	//my fsm block
@@ -316,11 +317,9 @@ module mfp_nexys4_ddr(
 	always@(posedge clk_out_25MHZ)
 	begin
 		if(CPU_RESETN_DB == 1'b0)
-			delay_counter <= 32'd0;
-		else if(delay_counter == 32'd78600)
-			delay_counter <= 32'd0;
+			delay_counter <= 18'd0;
 		else
-			delay_counter <= delay_counter + 32'd1;
+			delay_counter <= delay_counter + 18'd1;
 	end
 	
 	//next state logic
@@ -339,18 +338,30 @@ module mfp_nexys4_ddr(
 			
 			SM_TAKE_PHOTO_EXEC:
 			begin
-				if((delay_counter == 32'd0)||(delay_counter == 32'd1))
-				begin
+				if(photo_done == 1'b1)
 					next_state = SM_TAKE_PHOTO_DONE;
-				end
 			end
+			
 			
 			SM_TAKE_PHOTO_DONE:
 			begin
-				next_state = SM_CHANGE_DISP_IMAGE;
+				next_state = SM_TAKE_PHOTO_ACK;
 			end
 			
-			SM_CHANGE_DISP_IMAGE:
+			SM_TAKE_PHOTO_ACK:
+			begin
+				if(image_sel == 1'b1)
+					next_state = SM_CHANGE_DISP_IMAGE_0;
+				else
+					next_state = SM_CHANGE_DISP_IMAGE_1;
+			end
+			
+			SM_CHANGE_DISP_IMAGE_0:
+			begin
+				next_state = SM_TAKE_PHOTO_START;
+			end
+			
+			SM_CHANGE_DISP_IMAGE_1:
 			begin
 				next_state = SM_TAKE_PHOTO_START;
 			end
@@ -363,34 +374,49 @@ module mfp_nexys4_ddr(
 		case(curr_state)
 			SM_RESET:
 			begin
+				photo_start = 1'b0;
+				photo_ack = 1'b0;
 				image_sel = 1'b1;
-				image_sel_next = 1'b0;
 				default_flag = 1'b0;
 			end
 			
 			SM_TAKE_PHOTO_START:
 			begin
-				//make a latch
-				if(image_sel == 1'b1)
-					image_sel_next = 1'b0;
-				else
-					image_sel_next = 1'b1;
+				photo_start = 1'b1;
+				photo_ack = 1'b0;
 				default_flag = 1'b0;
 			end
 			
 			SM_TAKE_PHOTO_EXEC:
 			begin
+				photo_start = 1'b1;
+				photo_ack = 1'b0;
 				default_flag = 1'b0;
 			end
 			
 			SM_TAKE_PHOTO_DONE:
 			begin
+				photo_start = 1'b0;
+				photo_ack = 1'b0;
 				default_flag = 1'b0;
 			end
 			
-			SM_CHANGE_DISP_IMAGE:
+			SM_TAKE_PHOTO_ACK:
 			begin
-				image_sel = image_sel_next;
+				photo_start = 1'b0;
+				photo_ack = 1'b1;
+				default_flag = 1'b0;
+			end
+			
+			SM_CHANGE_DISP_IMAGE_0:
+			begin
+				image_sel = 1'b0;
+				default_flag = 1'b0;
+			end
+			
+			SM_CHANGE_DISP_IMAGE_1:
+			begin
+				image_sel = 1'b1;
 				default_flag = 1'b0;
 			end
 			
@@ -402,9 +428,9 @@ module mfp_nexys4_ddr(
 	end
 	
 	wire capture_we_inter;
-	assign capture_we = capture_we_inter;
+	// assign capture_we = capture_we_inter;
 	
-	/*
+	
 	photo_sm photo_sm(
 		.reset(CPU_RESETN_DB),
 		.start(photo_start),
@@ -414,7 +440,7 @@ module mfp_nexys4_ddr(
 		.wen(capture_we_inter),
 		.wen_out(capture_we),
 		.done(photo_done)
-	);*/
+	);
 		
 	ov7670_capture_verilog cap1(
         .pclk(cam_pck),
