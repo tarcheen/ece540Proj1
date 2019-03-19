@@ -130,6 +130,33 @@ module mfp_nexys4_ddr(
 	reg min_max_ack;
 	//////////////////////////////////////////////////////
 		
+	////////////////////////////////////////////////////////
+	//signal for filter block 
+	//should come from filter block
+	//and map to block memories 
+	wire filtered_we;
+	wire [16:0] filter_write_addr;
+	wire filter_write_data;
+	
+	//signal for min and max block
+	wire [16:0] min_max_read_addr;
+	wire min_max_read_data;
+	
+	//outputs of min and max module
+	wire [8:0] x_min;
+	wire [8:0] x_max;
+
+	wire [8:0] y_min;
+	wire [8:0] y_max;
+
+	//inferred latches for x_min,x_max,y_min,y_max
+	reg [8:0] x_min_l;
+	reg [8:0] x_max_l;
+
+	reg [8:0] y_min_l;
+	reg [8:0] y_max_l;
+
+	////////////////////////////////////////////////////////
 	
 	IBUF IBUF1(.O(tck_in),.I(JB[4]));
 	BUFG BUFG1(.O(tck), .I(tck_in));
@@ -238,7 +265,6 @@ module mfp_nexys4_ddr(
 			.doutb(image_data_1)
         );
 		
-	/*
 	blk_mem_gen_3 bw_image (
 		.clka(clk_out_25MHZ),    	// run on 25 MHz
 		.wea(filtered_we),      	// comes from filter block
@@ -247,7 +273,7 @@ module mfp_nexys4_ddr(
 		.clkb(clk_out_25MHZ),    	// run on 25 MHz
 		.addrb(min_max_read_addr),  // comes from min max block
 		.doutb(min_max_read_data)  	// comes from min max block
-	);*/
+	);
 	
 	//this block decides which image to be displyed
 	//reading logic should go here
