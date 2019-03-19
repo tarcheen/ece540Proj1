@@ -36,11 +36,11 @@ module dtg(
 // Timing parameters (for 75MHz pixel clock and 1024 x 768 display)
 
 parameter
-		HORIZ_PIXELS = 1024,  HCNT_MAX  = 1327, 		
-		HSYNC_START  = 1053,  HSYNC_END = 1189,
+		HORIZ_PIXELS = 640,  HCNT_MAX  = 800, 		
+		HSYNC_START  = 640+16,  HSYNC_END = 640+16+96,
 
-		VERT_PIXELS  = 768,  VCNT_MAX  = 805,
-		VSYNC_START  = 773,  VSYNC_END = 779;
+		VERT_PIXELS  = 480,  VCNT_MAX  = 480+10+2,
+		VSYNC_START  = 480+10,  VSYNC_END = 480+10+2+33;
 			
 // generate video signals and pixel counts
 always @(posedge clock) begin

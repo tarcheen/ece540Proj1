@@ -8,7 +8,8 @@ set_property -dict { PACKAGE_PIN E3    IOSTANDARD LVCMOS33 } [get_ports { CLK100
 create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports {CLK100MHZ}];
 
 set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets tck_in] 
-set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets cam_pck_IBUF] 
+set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets cam_pck] 
+## create_clock -add -name exe_clk_pin -period 200.00 -waveform {0 100} [get_ports {cam_pck}];
 
 ##Switches
 
