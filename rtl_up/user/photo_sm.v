@@ -21,12 +21,20 @@ module photo_sm(
 	input				start,
 	input				ack,
 	input				vsync,
-	input				wen,
-	output	reg 		wen_out,
+	output	reg 		wen,
+	output	reg			started,
 	output	reg			done,
 	output	reg			error
 );
-
+	/*
+	always@(*)
+	begin
+		wen = 1'b1;
+		started = 1'b1;
+		done = 1'b1;
+		error = 1'b0;
+	end*/
+	
 	reg [2:0] curr_state;
 	reg [2:0] next_state;
 	
@@ -65,18 +73,24 @@ module photo_sm(
 			begin
 				if(vsync == 1'b1)
 					next_state = SM_WAIT_FOR_VSYNC_0;
+				else
+					next_state = SM_WAIT_FOR_VSYNC;
 			end
 			
 			SM_WAIT_FOR_VSYNC_0:
 			begin
 				if(vsync == 1'b0)
 					next_state = SM_WAIT_FOR_VSYNC_1;
+				else
+					next_state = SM_WAIT_FOR_VSYNC_0;
 			end
 			
 			SM_WAIT_FOR_VSYNC_1:
 			begin
 				if(vsync == 1'b1)
 					next_state = SM_DONE;
+				else
+					next_state = SM_WAIT_FOR_VSYNC_1;
 			end
 			
 			SM_DONE:
@@ -102,60 +116,68 @@ module photo_sm(
 		case(curr_state)
 			SM_RESET:
 			begin
-				wen_out = 1'b0;
+				wen = 1'b0;
+				started = 1'b0;
 				done = 1'b0;
 				error = 1'b0;
 			end
 			
 			SM_WAIT_FOR_START:
 			begin
-				wen_out = 1'b0;
+				wen = 1'b0;
+				started = 1'b0;
 				done = 1'b0;
 				error = 1'b0;
 			end
 			
 			SM_WAIT_FOR_VSYNC:
 			begin
-				wen_out = 1'b0;
+				wen = 1'b0;
+				started = 1'b1;
 				done = 1'b0;
 				error = 1'b0;
 			end
 			
 			SM_WAIT_FOR_VSYNC_0:
 			begin
-				wen_out = wen;
+				wen = 1'b1;
+				started = 1'b1;
 				done = 1'b0;
 				error = 1'b0;
 			end
 			
 			SM_WAIT_FOR_VSYNC_1:
 			begin
-				wen_out = wen;
-				done = 0;
+				wen = 1'b1;
+				started = 1'b1;
+				done = 1'b0;
 				error = 1'b0;
 			end
 			
 			SM_DONE:
 			begin
-				wen_out = 1'b0;
+				wen = 1'b0;
+				started = 1'b0;
 				done = 1'b1;
 				error = 1'b0;
 			end
 			
 			SM_ERROR:
 			begin
-				wen_out = 1'b0;
+				wen = 1'b0;
+				started = 1'b0;
 				done = 1'b0;
 				error = 1'b1;
 			end
 			
 			default:
 			begin
-				wen_out = 1'b0;
+				wen = 1'b0;
+				started = 1'b0;
 				done = 1'b0;
 				error = 1'b1;
 			end
 		endcase
 	end
-
+	
 endmodule

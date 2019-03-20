@@ -94,6 +94,7 @@ module mfp_nexys4_ddr(
 	//output of main FSM
 	reg photo_start;
 	//wait till its done, will come from some vlock
+	wire photo_started;
 	wire photo_done;
 	//acknowledge it
 	//output of FSM
@@ -146,7 +147,8 @@ module mfp_nexys4_ddr(
 		AN[0] = 1'b0;
 		LED[0] = done_config;
 		LED[1] = default_flag;
-		LED[2] = photo_done;
+		LED[2] = photo_started;
+		LED[3] = photo_done;
 	end
 	
 										   
@@ -239,14 +241,15 @@ module mfp_nexys4_ddr(
 	//states of main state machine
 	localparam SM_RESET = 0;		
     localparam SM_TAKE_PHOTO_START = 1;
-    localparam SM_TAKE_PHOTO_EXEC = 2;
-    localparam SM_TAKE_PHOTO_DONE = 3;
-    localparam SM_TAKE_PHOTO_ACK = 4;
-    localparam SM_MIN_MAX_START = 5;
-    localparam SM_MIN_MAX_EXEC = 6;
-    localparam SM_MIN_MAX_DONE = 7;
-    localparam SM_MIN_MAX_ACK = 8;
-    localparam SM_ERROR = 9;
+    localparam SM_TAKE_PHOTO_STARTED = 2;
+    localparam SM_TAKE_PHOTO_EXEC = 3;
+    localparam SM_TAKE_PHOTO_DONE = 4;
+    localparam SM_TAKE_PHOTO_ACK = 5;
+    localparam SM_MIN_MAX_START = 6;
+    localparam SM_MIN_MAX_EXEC = 7;
+    localparam SM_MIN_MAX_DONE = 8;
+    localparam SM_MIN_MAX_ACK = 9;
+    localparam SM_ERROR = 10;
 	
 	//my fsm block
 	//this block is the main executor
@@ -260,7 +263,7 @@ module mfp_nexys4_ddr(
 	end
 	
 	//next state logic
-	always@(curr_state,photo_done,min_max_done)
+	always@(curr_state,photo_started,photo_done,min_max_done)
 	begin
 		case(curr_state)
 			SM_RESET:
@@ -270,7 +273,13 @@ module mfp_nexys4_ddr(
 			
 			SM_TAKE_PHOTO_START:
 			begin
-				next_state = SM_TAKE_PHOTO_EXEC;
+				next_state = SM_TAKE_PHOTO_STARTED;
+			end
+			
+			SM_TAKE_PHOTO_STARTED:
+			begin
+				if(photo_started == 1'b1)
+					next_state = SM_TAKE_PHOTO_EXEC;
 			end
 			
 			SM_TAKE_PHOTO_EXEC:
@@ -338,9 +347,16 @@ module mfp_nexys4_ddr(
 				default_flag = 1'b0;
 			end
 			
-			SM_TAKE_PHOTO_EXEC:
+			SM_TAKE_PHOTO_STARTED:
 			begin
 				photo_start = 1'b1;
+				photo_ack = 1'b0;
+				default_flag = 1'b0;
+			end
+			
+			SM_TAKE_PHOTO_EXEC:
+			begin
+				photo_start = 1'b0;
 				photo_ack = 1'b0;
 				default_flag = 1'b0;
 			end
@@ -348,7 +364,7 @@ module mfp_nexys4_ddr(
 			SM_TAKE_PHOTO_DONE:
 			begin
 				photo_start = 1'b0;
-				photo_ack = 1'b0;
+				photo_ack = 1'b1;
 				default_flag = 1'b0;
 			end
 			
@@ -405,7 +421,7 @@ module mfp_nexys4_ddr(
 	
 	
 	wire capture_we_inter;
-	// assign capture_we = capture_we_inter;
+	assign capture_we = capture_we_inter & photo_en;
 	// assign photo_done = 1'b1;
 	
 	
@@ -415,8 +431,8 @@ module mfp_nexys4_ddr(
 		.start(photo_start),
 		.ack(photo_ack),
 		.vsync(cam_vs),
-		.wen(capture_we_inter),
-		.wen_out(capture_we),
+		.wen(photo_en),
+		.started(photo_started),
 		.done(photo_done),
 		.error(photo_error)
 	);
