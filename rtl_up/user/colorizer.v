@@ -27,6 +27,19 @@ module colorizer(
 	input				video_on,
 	input		[11 :0]	op_pixel,
 	input				blank_disp,
+	input		[2:0]	superimpose_pixel,
+	input		[3:0]	top_left_r,
+	input		[3:0]	top_left_g,
+	input		[3:0]	top_left_b,
+	input		[3:0]	top_right_r,
+	input		[3:0]	top_right_g,
+	input		[3:0]	top_right_b,
+	input		[3:0]	bottom_left_r,
+	input		[3:0]	bottom_left_g,
+	input		[3:0]	bottom_left_b,
+	input		[3:0]	bottom_right_r,
+	input		[3:0]	bottom_right_g,
+	input		[3:0]	bottom_right_b,
 	output	reg	[3 :0]	red, green, blue
 );
 
@@ -43,13 +56,45 @@ begin
 		blue 	= 4'b0000;
 	end
 	//else we should decide between world or icon
-	else if(blank_disp == 1'b0)
+	else if((blank_disp == 1'b0) && (superimpose_pixel == 3'b0))
 	begin
 		//if icon_pixel is 00 then comes from 
 		//world pixel
 		red = op_pixel[11:8];
 		green = op_pixel[7:4];
 		blue = op_pixel[3:0];
+	end
+	else if((blank_disp == 1'b0) && (superimpose_pixel != 3'b0))
+	begin
+		case(superimpose_pixel)
+			3'b001:
+			begin
+				red = top_left_r;
+				green = top_left_g;
+				blue = top_left_b;
+			end
+			
+			3'b010:
+			begin
+				red = top_right_r;
+				green = top_right_g;
+				blue = top_right_b;
+			end
+			
+			3'b011:
+			begin
+				red = bottom_left_r;
+				green = bottom_left_g;
+				blue = bottom_left_b;
+			end
+			
+			3'b100:
+			begin
+				red = bottom_right_r;
+				green = bottom_right_g;
+				blue = bottom_right_b;
+			end
+		endcase
 	end
 	else
 	begin

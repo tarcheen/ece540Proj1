@@ -114,13 +114,9 @@ module mfp_nexys4_ddr(
 
 	wire [8:0] y_min;
 	wire [8:0] y_max;
-
-	//inferred latches for x_min,x_max,y_min,y_max
-	reg [8:0] x_min_l;
-	reg [8:0] x_max_l;
-
-	reg [8:0] y_min_l;
-	reg [8:0] y_max_l;
+	
+	wire [8:0] x_cen;
+	wire [8:0] y_cen;
 
 	////////////////////////////////////////////////////////
 	
@@ -188,6 +184,8 @@ module mfp_nexys4_ddr(
 		.blank_disp(blank_disp)
 	);
 	
+	wire [2:0] superimpose_pixel;
+	
 	//instance of colorizer
 	//which actually takes care of coloring
 	//FIXME make changes in coloriser
@@ -196,12 +194,51 @@ module mfp_nexys4_ddr(
 		.video_on(video_on),
 		.blank_disp(blank_disp),
 		.op_pixel(frame_pixel),
+		.superimpose_pixel(superimpose_pixel),
+		
+		.top_left_r(4'b1111),
+		.top_left_g(4'b0000),
+		.top_left_b(4'b0000),
+		
+		.top_right_r(4'b1111),
+		.top_right_g(4'b1111),
+		.top_right_b(4'b0000),
+		
+		.bottom_left_r(4'b1111),
+		.bottom_left_g(4'b0000),
+		.bottom_left_b(4'b1111),
+		
+		.bottom_right_r(4'b0000),
+		.bottom_right_g(4'b1111),
+		.bottom_right_b(4'b0000),
+		
 		.red(VGA_R),
 		.green(VGA_G),
 		.blue(VGA_B)
 	);
 	
+	overlap_image overlap_image(
+		.x_min(x_min)
+		,.x_max(x_max)
+		,.y_min(y_min)
+		,.y_max(y_max)
+		,.x_cen(x_cen)
+		,.y_cen(y_cen)
+		,.pixel_row(pixel_row)
+		,.pixel_column(pixel_column)
+		,.swap_pixel(superimpose_pixel)
+	);
+	
 	assign cam_xck = clk_out_25MHZ;
+	
+	//FIXME remove assigns
+	//get this signal from min max module
+	assign x_min = 9'd40;
+	assign x_cen = 9'd60;
+	assign x_max = 9'd80;
+	assign y_min = 9'd40;
+	assign y_cen = 9'd60;
+	assign y_max = 9'd80;
 	
 	//camera config module
 	camera_configure CCONF(
