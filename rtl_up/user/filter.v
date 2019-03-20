@@ -6,35 +6,45 @@ module filter (
 	input  [11:0] data_pixel,
 	output [16:0] address_to_read,
 	output reg [8:0] x_min, x_max, y_min, y_max,
-	output reg done_flag
+	output reg done_flag,
+	output reg error_flag
 );
 
 // First we declare the state machine variables.
 // First we declare the state machine variables.
 localparam SM_RESET = 0;
-localparam RESET_XY = 1;	
-localparam IDLE = 2;	
+localparam IDLE = 1;	
+localparam RESET_XY = 2;	
 localparam ADDR_GEN = 3;
-localparam ADDR_GEN_WAIT_1 = 4;
-localparam ADDR_GEN_WAIT_2 = 5;
-localparam COLOR_DETECT = 6;
-localparam CHECK_PIX_OUT = 7;
-localparam MIN_MAX = 8;
-localparam RESET_PIXEL_OUT = 9;
-localparam CHECK_DONE = 10;
-localparam LATCH_OP = 11;
-localparam DONE = 12;
+localparam COLOR_DETECT = 4;
+localparam CHECK_PIX_OUT = 5;
+localparam CHECK_X_MIN = 6;
+localparam UPDATE_X_MIN = 7;
+localparam CHECK_X_MAX = 8;
+localparam UPDATE_X_MAX = 9;
+localparam CHECK_Y_MIN = 10;
+localparam UPDATE_Y_MIN = 11;
+localparam CHECK_Y_MAX = 12;
+localparam UPDATE_Y_MAX = 13;
+localparam RESET_PIXEL_OUT = 14;
+localparam CHECK_DONE = 15;
+localparam CHECK_X_MIN_AGAIN = 16;
+localparam UPDATE_X_MIN_AGAIN = 17;
+localparam CHECK_Y_MIN_AGAIN = 18;
+localparam UPDATE_Y_MIN_AGAIN = 19;
+localparam DONE = 20;
+localparam SM_ERROR = 21;
 
-reg [3:0] CURR_STATE, NEXT_STATE;
+reg [4:0] CURR_STATE, NEXT_STATE;
 
-//temp reg for x_min and x_max
+//temp reg for x_min and x_max, y_min and y_max
 reg [8:0] x_min_temp, x_max_temp, y_min_temp, y_max_temp;
 
 reg [11:0] x_count;
 reg [11:0] y_count;
 
-reg [16:0]address;
-reg [0:0] pixel_out;
+reg [16:0]	address;
+reg [0:0] 	pixel_out;
 
 assign address_to_read = address;
 
@@ -97,7 +107,8 @@ always@(*) begin
 		
 		IDLE: 
 		begin
-			if (start_flag != 1)
+			//start the computation
+			if (start_flag != 1'b1)
 				NEXT_STATE = IDLE;
 			else
 				NEXT_STATE = RESET_XY;
@@ -105,20 +116,11 @@ always@(*) begin
 		
 		RESET_XY:
 		begin
-			NEXT_STATE = ADDR_GEN;
+			// NEXT_STATE = ADDR_GEN;
+			NEXT_STATE = DONE;
 		end
 		
 		ADDR_GEN:
-		begin
-			NEXT_STATE = ADDR_GEN_WAIT_1;
-		end
-		
-		ADDR_GEN_WAIT_1:
-		begin
-			NEXT_STATE = ADDR_GEN_WAIT_2;
-		end
-		
-		ADDR_GEN_WAIT_2:
 		begin
 			NEXT_STATE = COLOR_DETECT;
 		end
@@ -132,7 +134,7 @@ always@(*) begin
 		begin
 			if(pixel_out == 1'b1)
 			begin
-				NEXT_STATE = MIN_MAX;
+				NEXT_STATE = CHECK_X_MIN;
 			end
 			else
 			begin
@@ -140,7 +142,54 @@ always@(*) begin
 			end
 		end
 	
-		MIN_MAX: 
+		CHECK_X_MIN: 
+		begin
+			if (x_count < x_min_temp ) 
+				NEXT_STATE = UPDATE_X_MIN;
+			else
+				NEXT_STATE = CHECK_X_MAX;
+		end
+		
+		CHECK_X_MAX:
+		begin
+			if (x_count > x_max_temp ) 
+				NEXT_STATE = UPDATE_X_MAX;
+			else
+				NEXT_STATE = CHECK_Y_MIN;
+		end
+		
+		CHECK_Y_MIN:
+		begin
+			if (y_count < y_min_temp ) 
+				NEXT_STATE = UPDATE_Y_MIN;
+			else
+				NEXT_STATE = CHECK_Y_MAX;
+		end
+		
+		CHECK_Y_MAX:
+		begin
+			if (y_count > y_max_temp ) 
+				NEXT_STATE = UPDATE_Y_MAX;
+			else
+				NEXT_STATE = RESET_PIXEL_OUT;
+		end
+		
+		UPDATE_X_MIN:
+		begin
+			NEXT_STATE = CHECK_X_MAX;
+		end
+		
+		UPDATE_X_MAX:
+		begin
+			NEXT_STATE = CHECK_Y_MIN;
+		end
+		
+		UPDATE_Y_MIN:
+		begin
+			NEXT_STATE = CHECK_Y_MAX;
+		end
+		
+		UPDATE_Y_MAX:
 		begin
 			NEXT_STATE = RESET_PIXEL_OUT;
 		end
@@ -154,7 +203,7 @@ always@(*) begin
 		begin
 			if (address >= 17'd76799) 
 			begin
-				NEXT_STATE = LATCH_OP;
+				NEXT_STATE = CHECK_X_MIN_AGAIN;
 			end
 			else
 			begin
@@ -162,7 +211,28 @@ always@(*) begin
 			end
 		end
 		
-		LATCH_OP:
+		CHECK_X_MIN_AGAIN:
+		begin
+			if(x_min_temp >= 319)
+				NEXT_STATE = UPDATE_X_MIN_AGAIN;
+			else
+				NEXT_STATE = CHECK_Y_MIN_AGAIN;
+		end
+		
+		CHECK_Y_MIN_AGAIN:
+		begin
+			if(y_min_temp >= 239)
+				NEXT_STATE = UPDATE_Y_MIN_AGAIN;
+			else
+				NEXT_STATE = DONE;
+		end
+		
+		UPDATE_X_MIN_AGAIN:
+		begin
+			NEXT_STATE = CHECK_Y_MIN_AGAIN;
+		end
+		
+		UPDATE_Y_MIN_AGAIN:
 		begin
 			NEXT_STATE = DONE;
 		end
@@ -173,6 +243,16 @@ always@(*) begin
 				NEXT_STATE = DONE;
 			else
 				NEXT_STATE = IDLE;
+		end
+		
+		SM_ERROR:
+		begin
+		
+		end
+		
+		default:
+		begin
+			NEXT_STATE = SM_ERROR;
 		end
 	endcase
 end
@@ -197,6 +277,8 @@ begin
 			
 			pixel_out = 0;		
 			done_flag = 0;
+			
+			error_flag = 1'b0; 
 		end
 	
 		IDLE: 
@@ -213,18 +295,12 @@ begin
 		
 		RESET_XY:
 		begin
+			done_flag = 0;
 		end
 		
 		ADDR_GEN:
 		begin
-		end
-		
-		ADDR_GEN_WAIT_1:
-		begin
-		end
-		
-		ADDR_GEN_WAIT_2:
-		begin
+			done_flag = 0;
 		end
 		
 		COLOR_DETECT: 
@@ -237,52 +313,89 @@ begin
 			begin
 				pixel_out = 1'b0;
 			end		
+			done_flag = 0;
 		end
 	
 		CHECK_PIX_OUT:
 		begin
+			done_flag = 0;
 		end
 		
-		MIN_MAX: 
+		CHECK_X_MIN: 
 		begin
-			
-			if (x_count < x_min_temp ) 
-			begin
-				x_min_temp = x_count;
-			end
-			
-			if (x_count > x_max_temp) 
-			begin
-				x_max_temp = x_count;
-			end
-			
-			if (y_count < y_min_temp ) 
-			begin
-				y_min_temp = y_count;
-			end
-			
-			if (y_count > y_max_temp) 
-			begin
-				y_max_temp = y_count;
-			end
+			done_flag = 0;
+		end
+		
+		CHECK_X_MAX:
+		begin
+			done_flag = 0;
+		end
+		
+		CHECK_Y_MIN:
+		begin
+			done_flag = 0;
+		end
+		
+		CHECK_Y_MAX:
+		begin
+			done_flag = 0;
+		end
+		
+		UPDATE_X_MIN:
+		begin
+			x_min_temp = x_count;
+			done_flag = 0;
+		end
+		
+		UPDATE_X_MAX:
+		begin
+			x_max_temp = x_count;
+			done_flag = 0;
+		end
+		
+		UPDATE_Y_MIN:
+		begin
+			y_min_temp = y_count;
+			done_flag = 0;
+		end
+		
+		UPDATE_Y_MAX:
+		begin
+			y_max_temp = y_count;
+			done_flag = 0;
 		end
 		
 		RESET_PIXEL_OUT:
 		begin
 			pixel_out = 1'b0;
-        end
+			done_flag = 0;
+		end
 		
 		CHECK_DONE:
 		begin
-        end
+			done_flag = 0;
+		end
 		
-		LATCH_OP:
+		CHECK_X_MIN_AGAIN:
 		begin
-			if(x_min_temp >= 319)
-				x_min_temp = 0;
-			
-			if(y_min_temp >= 239)
-				y_min_temp = 0;
+			done_flag = 0;
+		end
+		
+		CHECK_Y_MIN_AGAIN:
+		begin
+			done_flag = 0;
+		end
+		
+		UPDATE_X_MIN_AGAIN:
+		begin
+			x_min_temp = 0;
+			done_flag = 0;
+		end
+		
+		UPDATE_Y_MIN_AGAIN:
+		begin
+			y_min_temp = 0;
+			done_flag = 0;
 		end
 		
 		DONE:
@@ -296,7 +409,19 @@ begin
 			x_max = 150;
 			y_min = 30;
 			y_max = 150;
-			done_flag = 1;
+			done_flag = 1'b1;
+		end
+		
+		SM_ERROR:
+		begin
+			done_flag = 1'b0;
+			error_flag = 1'b1;
+		end
+		
+		default:
+		begin
+			done_flag = 1'b0;
+			error_flag = 1'b1;
 		end
 	endcase
 end

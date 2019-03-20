@@ -103,7 +103,9 @@ module mfp_nexys4_ddr(
 	
 	//hand shaking signals for min and max
 	reg min_max_start;
+	wire min_max_started;
 	wire min_max_done;
+	wire min_max_error;
 	reg min_max_ack;
 		
 	////////////////////////////////////////////////////////
@@ -111,15 +113,9 @@ module mfp_nexys4_ddr(
 	//outputs of min and max module
 	wire [8:0] x_min;
 	wire [8:0] x_max;
-
-	reg [8:0] x_min_l;
-	reg [8:0] x_max_l;
 	
 	wire [8:0] y_min;
 	wire [8:0] y_max;
-	
-	reg [8:0] y_min_l;
-	reg [8:0] y_max_l;
 	
 	wire [8:0] x_cen;
 	wire [8:0] y_cen;
@@ -153,6 +149,7 @@ module mfp_nexys4_ddr(
 		LED[1] = default_flag;
 		LED[2] = photo_started;
 		LED[3] = photo_done;
+		LED[4] = min_max_error;
 	end
 	
 										   
@@ -238,10 +235,11 @@ module mfp_nexys4_ddr(
 		.x_max(x_max),
 		.y_min(y_min),
 		.y_max(y_max),
-		.done_flag(min_max_done)
+		.done_flag(min_max_done),
+		.error_flag(min_max_error)
 	);
 	
-	
+	/*
 	always@(*)
 	begin
 		if(my_latch_en == 1'b1)
@@ -251,15 +249,15 @@ module mfp_nexys4_ddr(
 			y_min_l = y_min;
 			y_max_l = y_max;
 		end
-	end
+	end*/
 	
 	overlap_image overlap_image(
-		.x_min(x_min_l)
-		,.x_max(x_max_l)
-		,.y_min(y_min_l)
-		,.y_max(y_max_l)
-		,.x_cen(x_min_l)
-		,.y_cen(y_min_l)
+		.x_min(x_min)
+		,.x_max(x_max)
+		,.y_min(y_min)
+		,.y_max(y_max)
+		,.x_cen(x_min)
+		,.y_cen(y_min)
 		,.pixel_row(pixel_row)
 		,.pixel_column(pixel_column)
 		,.swap_pixel(superimpose_pixel)
