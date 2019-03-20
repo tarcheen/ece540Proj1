@@ -76,7 +76,7 @@ module mfp_nexys4_ddr(
     wire [11:0] frame_pixel;
     wire [16:0] capture_addr;
     wire [11:0] capture_data;
-    wire capture_we;
+    reg capture_we;
 
 	//////////////////////////////////////////////
 	
@@ -112,11 +112,19 @@ module mfp_nexys4_ddr(
 	wire [8:0] x_min;
 	wire [8:0] x_max;
 
+	reg [8:0] x_min_l;
+	reg [8:0] x_max_l;
+	
 	wire [8:0] y_min;
 	wire [8:0] y_max;
 	
+	reg [8:0] y_min_l;
+	reg [8:0] y_max_l;
+	
 	wire [8:0] x_cen;
 	wire [8:0] y_cen;
+	
+	reg my_latch_en;
 
 	////////////////////////////////////////////////////////
 	
@@ -210,20 +218,48 @@ module mfp_nexys4_ddr(
 		
 		.bottom_right_r(4'b0000),
 		.bottom_right_g(4'b1111),
-		.bottom_right_b(4'b0000),
+		.bottom_right_b(4'b1111),
 		
 		.red(VGA_R),
 		.green(VGA_G),
 		.blue(VGA_B)
 	);
 	
+	///TEMP Change by Pk, del to revert, filter module added
+	
+	filter filter(
+		.clk(clk_out_25MHZ),	
+		.reset(CPU_RESETN_DB),	
+		.ack_flag(min_max_ack),
+		.start_flag(min_max_start),
+		.data_pixel(filter_read_data),
+		.address_to_read(filter_read_addr),
+		.x_min(x_min),
+		.x_max(x_max),
+		.y_min(y_min),
+		.y_max(y_max),
+		.done_flag(min_max_done)
+	);
+	
+	
+	always@(*)
+	begin
+		if(my_latch_en == 1'b1)
+		begin
+			x_min_l = x_min;
+			x_max_l = x_max;
+			y_min_l = y_min;
+			y_max_l = y_max;
+		end
+	end
+	
 	overlap_image overlap_image(
-		.x_min(x_min)
-		,.x_max(x_max)
-		,.y_min(y_min)
-		,.y_max(y_max)
-		,.x_cen(x_cen)
-		,.y_cen(y_cen)
+		.x_min(x_min_l)
+		,.x_max(x_max_l)
+		,.y_min(y_min_l)
+		,.y_max(y_max_l)
+		,.x_cen(x_min_l)
+		,.y_cen(y_min_l)
 		,.pixel_row(pixel_row)
 		,.pixel_column(pixel_column)
 		,.swap_pixel(superimpose_pixel)
@@ -233,12 +269,15 @@ module mfp_nexys4_ddr(
 	
 	//FIXME remove assigns
 	//get this signal from min max module
-	assign x_min = 9'd40;
-	assign x_cen = 9'd60;
-	assign x_max = 9'd80;
-	assign y_min = 9'd40;
-	assign y_cen = 9'd60;
-	assign y_max = 9'd80;
+	// assign x_min = 9'd40;
+	// assign x_cen = 9'd60;
+	// assign x_max = 9'd80;
+	// assign y_min = 9'd40;
+	// assign y_cen = 9'd60;
+	// assign y_max = 9'd80;
+	//FIXME remove these assign statemenets
+	//when we connect the nets to idividual blocks
+	// assign filter_read_addr = 0;
 	
 	//camera config module
 	camera_configure CCONF(
@@ -271,9 +310,6 @@ module mfp_nexys4_ddr(
 		
 	
 	
-	//FIXME remove these assign statemenets
-	//when we connect the nets to idividual blocks
-	assign filter_read_addr = 0;
 	
 	//states of main state machine
 	localparam SM_RESET = 0;		
@@ -286,7 +322,8 @@ module mfp_nexys4_ddr(
     localparam SM_MIN_MAX_EXEC = 7;
     localparam SM_MIN_MAX_DONE = 8;
     localparam SM_MIN_MAX_ACK = 9;
-    localparam SM_ERROR = 10;
+    localparam SM_MIN_MAX_ACK_WAIT = 10;
+    localparam SM_ERROR = 11;
 	
 	//my fsm block
 	//this block is the main executor
@@ -305,7 +342,8 @@ module mfp_nexys4_ddr(
 		case(curr_state)
 			SM_RESET:
 			begin
-				next_state = SM_TAKE_PHOTO_START;
+				// next_state = SM_TAKE_PHOTO_START;
+				next_state = SM_MIN_MAX_START;
 			end
 			
 			SM_TAKE_PHOTO_START:
@@ -342,7 +380,8 @@ module mfp_nexys4_ddr(
 			
 			SM_MIN_MAX_EXEC:
 			begin
-				next_state = SM_MIN_MAX_DONE;
+				if(min_max_done == 1'b1)
+					next_state = SM_MIN_MAX_DONE;
 			end	
 			
 			SM_MIN_MAX_DONE:
@@ -352,7 +391,13 @@ module mfp_nexys4_ddr(
 			
 			SM_MIN_MAX_ACK:
 			begin
-				next_state = SM_TAKE_PHOTO_START;
+				next_state = SM_MIN_MAX_ACK_WAIT;
+			end	
+			
+			SM_MIN_MAX_ACK_WAIT:
+			begin
+				// next_state = SM_TAKE_PHOTO_START;
+				next_state = SM_MIN_MAX_START;
 			end	
 			
 			SM_ERROR:
@@ -374,6 +419,9 @@ module mfp_nexys4_ddr(
 			begin
 				photo_start = 1'b0;
 				photo_ack = 1'b0;
+				min_max_start = 1'b0;
+				min_max_ack = 1'b0;
+				my_latch_en = 1'b0;
 				default_flag = 1'b0;
 			end
 			
@@ -381,6 +429,9 @@ module mfp_nexys4_ddr(
 			begin
 				photo_start = 1'b1;
 				photo_ack = 1'b0;
+				min_max_start = 1'b0;
+				min_max_ack = 1'b0;
+				my_latch_en = 1'b0;
 				default_flag = 1'b0;
 			end
 			
@@ -388,6 +439,9 @@ module mfp_nexys4_ddr(
 			begin
 				photo_start = 1'b1;
 				photo_ack = 1'b0;
+				min_max_start = 1'b0;
+				min_max_ack = 1'b0;
+				my_latch_en = 1'b0;
 				default_flag = 1'b0;
 			end
 			
@@ -395,6 +449,9 @@ module mfp_nexys4_ddr(
 			begin
 				photo_start = 1'b0;
 				photo_ack = 1'b0;
+				min_max_start = 1'b0;
+				min_max_ack = 1'b0;
+				my_latch_en = 1'b0;
 				default_flag = 1'b0;
 			end
 			
@@ -402,6 +459,9 @@ module mfp_nexys4_ddr(
 			begin
 				photo_start = 1'b0;
 				photo_ack = 1'b1;
+				min_max_start = 1'b0;
+				min_max_ack = 1'b0;
+				my_latch_en = 1'b0;
 				default_flag = 1'b0;
 			end
 			
@@ -409,6 +469,9 @@ module mfp_nexys4_ddr(
 			begin
 				photo_start = 1'b0;
 				photo_ack = 1'b1;
+				min_max_start = 1'b0;
+				min_max_ack = 1'b0;
+				my_latch_en = 1'b0;
 				default_flag = 1'b0;
 			end
 					
@@ -416,6 +479,9 @@ module mfp_nexys4_ddr(
 			begin
 				photo_start = 1'b0;
 				photo_ack = 1'b1;
+				min_max_start = 1'b1;
+				min_max_ack = 1'b0;
+				my_latch_en = 1'b0;
 				default_flag = 1'b0;
 			end
 			
@@ -423,6 +489,9 @@ module mfp_nexys4_ddr(
 			begin
 				photo_start = 1'b0;
 				photo_ack = 1'b1;
+				min_max_start = 1'b1;
+				min_max_ack = 1'b0;
+				my_latch_en = 1'b0;
 				default_flag = 1'b0;
 			end
 			
@@ -430,6 +499,9 @@ module mfp_nexys4_ddr(
 			begin
 				photo_start = 1'b0;
 				photo_ack = 1'b1;
+				min_max_start = 1'b0;
+				min_max_ack = 1'b0;
+				my_latch_en = 1'b1;
 				default_flag = 1'b0;
 			end
 			
@@ -437,6 +509,19 @@ module mfp_nexys4_ddr(
 			begin
 				photo_start = 1'b0;
 				photo_ack = 1'b0;
+				min_max_start = 1'b0;
+				min_max_ack = 1'b1;
+				my_latch_en = 1'b0;
+				default_flag = 1'b0;
+			end
+			
+			SM_MIN_MAX_ACK_WAIT:
+			begin
+				photo_start = 1'b0;
+				photo_ack = 1'b0;
+				min_max_start = 1'b0;
+				min_max_ack = 1'b1;
+				my_latch_en = 1'b0;
 				default_flag = 1'b0;
 			end
 			
@@ -444,6 +529,9 @@ module mfp_nexys4_ddr(
 			begin
 				photo_start = 1'b0;
 				photo_ack = 1'b0;
+				min_max_start = 1'b0;
+				min_max_ack = 1'b0;
+				my_latch_en = 1'b0;
 				default_flag = 1'b1;
 			end
 
@@ -451,6 +539,9 @@ module mfp_nexys4_ddr(
 			begin
 				photo_start = 1'b0;
 				photo_ack = 1'b0;
+				min_max_start = 1'b0;
+				min_max_ack = 1'b0;
+				my_latch_en = 1'b0;
 				default_flag = 1'b1;
 			end
 		endcase
@@ -458,7 +549,11 @@ module mfp_nexys4_ddr(
 	
 	
 	wire capture_we_inter;
-	assign capture_we = capture_we_inter & photo_en;
+	always@(*)
+	begin
+		// capture_we = capture_we_inter & photo_en;
+		capture_we = 1'b0;
+	end
 	// assign photo_done = 1'b1;
 	
 	

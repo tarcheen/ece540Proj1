@@ -47,7 +47,7 @@ module photo_sm(
     localparam SM_ERROR = 6;
     
 	
-	always@(posedge clk)
+	always@(posedge clk,negedge reset)
 	begin
 		if(reset == 1'b0)
 			curr_state <= SM_RESET;

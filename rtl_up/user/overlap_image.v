@@ -32,6 +32,7 @@ module overlap_image(
 
 always@(*)
 begin
+	
 	if((pixel_column >= {3'b0,x_min}) && (pixel_column < {3'b0,x_cen}) 
 		&&(pixel_row >= {3'b0,y_min}) && (pixel_row < {3'b0,y_cen}))
 	begin
