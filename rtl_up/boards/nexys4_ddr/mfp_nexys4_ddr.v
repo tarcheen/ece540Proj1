@@ -66,49 +66,29 @@ module mfp_nexys4_ddr(
 	
 	wire tck_in, tck;
 	
-	///////////////////////////////////
+	/////////////////////////////////////////////
 	
 	//camera related signals
 	wire done_config; //Indicator of configuration status
 	
 	//Capture and VGA
     wire [16:0] frame_addr;
-    reg [11:0] frame_pixel;
+    wire [11:0] frame_pixel;
     wire [16:0] capture_addr;
     wire [11:0] capture_data;
     wire capture_we;
-    reg capture_we_1;
-    reg capture_we_2;
-	
-	//useful for writing to image
-	wire image_write_sel;
-	
-	/////////////////////////////////////////////
-	
+
 	//////////////////////////////////////////////
-	//select which image to display
-	//negate of that will be , where to write
-	//FSM op
-	reg image_sel;
-	//will come from filter block
+	
 	wire [16:0] filter_read_addr;
-	
-	reg [16:0] image_0_read_addr;
-	reg [16:0] image_1_read_addr;
-	
-	//generated from memories, which drives the coloriser and filter block
-	wire [11:0] image_data_0;
-	wire [11:0] image_data_1;
-	
 	//and filter data is used by filter block
-	reg [11:0] filter_read_data;
-	/////////////////////////////////////////////////
+	wire [11:0] filter_read_data;
 	
-	/////////////////////////////////////////////////
+	////////////////////////////////////////////////
 	//signals for main state machine
 	//state variables
-	reg [2:0] curr_state;
-	reg [2:0] next_state;
+	reg [3:0] curr_state;
+	reg [3:0] next_state;
 	
 	//start capture
 	//output of main FSM
@@ -118,29 +98,14 @@ module mfp_nexys4_ddr(
 	//acknowledge it
 	//output of FSM
 	reg photo_ack;
-	
-	//hand shaking signals for filter
-	reg filter_start;
-	wire filter_done;
-	reg filter_ack;
+	wire photo_error;
 	
 	//hand shaking signals for min and max
 	reg min_max_start;
 	wire min_max_done;
 	reg min_max_ack;
-	//////////////////////////////////////////////////////
 		
 	////////////////////////////////////////////////////////
-	//signal for filter block 
-	//should come from filter block
-	//and map to block memories 
-	wire filtered_we;
-	wire [16:0] filter_write_addr;
-	wire filter_write_data;
-	
-	//signal for min and max block
-	wire [16:0] min_max_read_addr;
-	wire min_max_read_data;
 	
 	//outputs of min and max module
 	wire [8:0] x_min;
@@ -180,12 +145,12 @@ module mfp_nexys4_ddr(
 	begin
 		AN[0] = 1'b0;
 		LED[0] = done_config;
-		LED[1] = image_sel;
-		LED[2] = default_flag;
+		LED[1] = default_flag;
+		LED[2] = photo_done;
 	end
 	
 										   
-	mfp_ahb_sevensegdec debug(.data({1'b1,2'b00,curr_state}), .seg({DP,CA,CB,CC,CD,CE,CF,CG}));
+	mfp_ahb_sevensegdec debug(.data({1'b1,1'b0,curr_state}), .seg({DP,CA,CB,CC,CD,CE,CF,CG}));
 	
 	//video_on signal tells us what to do at blanking time
 	wire video_on;
@@ -247,75 +212,29 @@ module mfp_nexys4_ddr(
 		
 	blk_mem_gen_0 fb1(
 			.clka(cam_pck),
-			.wea(capture_we_1),
+			.wea(capture_we),
 			.addra(capture_addr),
 			.dina(capture_data),
 			.clkb(clk_out_25MHZ),
-			.addrb(image_0_read_addr),
-			.doutb(image_data_0)
+			.addrb(frame_addr),
+			.doutb(frame_pixel)
         );
 		
 	blk_mem_gen_1 fb2(
 			.clka(cam_pck),
-			.wea(capture_we_2),
+			.wea(capture_we),
 			.addra(capture_addr),
 			.dina(capture_data),
 			.clkb(clk_out_25MHZ),
-			.addrb(image_1_read_addr),
-			.doutb(image_data_1)
+			.addrb(filter_read_addr),
+			.doutb(filter_read_data)
         );
 		
-	blk_mem_gen_3 bw_image (
-		.clka(clk_out_25MHZ),    	// run on 25 MHz
-		.wea(filtered_we),      	// comes from filter block
-		.addra(filter_write_addr),  // comes from filter block
-		.dina(filter_write_data),  	// comes from filter block
-		.clkb(clk_out_25MHZ),    	// run on 25 MHz
-		.addrb(min_max_read_addr),  // comes from min max block
-		.doutb(min_max_read_data)  	// comes from min max block
-	);
 	
-	//this block decides which image to be displyed
-	//reading logic should go here
-	always@(image_sel,image_data_0,image_data_1,
-			frame_addr,filter_read_addr)
-	begin
-		if(image_sel == 1'b0)
-		begin
-			frame_pixel = image_data_0;
-			filter_read_data = image_data_1;
-			image_0_read_addr = frame_addr;
-			image_1_read_addr = filter_read_addr;
-		end
-		else
-		begin
-			frame_pixel = image_data_1;		
-			filter_read_data = image_data_0;
-			image_0_read_addr = filter_read_addr;
-			image_1_read_addr = frame_addr;
-		end
-	end
-	
-	assign image_write_sel = ~image_sel;
-	
-	assign filter_read_addr = 0;
-	
-	always@(image_write_sel,capture_we)
-	begin
-		if(image_write_sel == 1'b0)
-		begin
-			capture_we_1 = capture_we;
-			capture_we_2 = 1'b0;
-		end
-		else
-		begin
-			capture_we_1 = 1'b0;
-			capture_we_2 = capture_we;
-		end
-	end
 	
 	//FIXME remove these assign statemenets
 	//when we connect the nets to idividual blocks
+	assign filter_read_addr = 0;
 	
 	//states of main state machine
 	localparam SM_RESET = 0;		
@@ -323,11 +242,11 @@ module mfp_nexys4_ddr(
     localparam SM_TAKE_PHOTO_EXEC = 2;
     localparam SM_TAKE_PHOTO_DONE = 3;
     localparam SM_TAKE_PHOTO_ACK = 4;
-    localparam SM_CHANGE_DISP_IMAGE_0 = 5;
-    localparam SM_CHANGE_DISP_IMAGE_1 = 6;
-	
-	reg [17:0] delay_counter;
-	
+    localparam SM_MIN_MAX_START = 5;
+    localparam SM_MIN_MAX_EXEC = 6;
+    localparam SM_MIN_MAX_DONE = 7;
+    localparam SM_MIN_MAX_ACK = 8;
+    localparam SM_ERROR = 9;
 	
 	//my fsm block
 	//this block is the main executor
@@ -340,16 +259,8 @@ module mfp_nexys4_ddr(
 			curr_state <= next_state;
 	end
 	
-	always@(posedge clk_out_25MHZ)
-	begin
-		if(CPU_RESETN_DB == 1'b0)
-			delay_counter <= 18'd0;
-		else
-			delay_counter <= delay_counter + 18'd1;
-	end
-	
 	//next state logic
-	always@(curr_state,photo_done,filter_done,min_max_done,delay_counter)
+	always@(curr_state,photo_done,min_max_done)
 	begin
 		case(curr_state)
 			SM_RESET:
@@ -368,7 +279,6 @@ module mfp_nexys4_ddr(
 					next_state = SM_TAKE_PHOTO_DONE;
 			end
 			
-			
 			SM_TAKE_PHOTO_DONE:
 			begin
 				next_state = SM_TAKE_PHOTO_ACK;
@@ -376,20 +286,36 @@ module mfp_nexys4_ddr(
 			
 			SM_TAKE_PHOTO_ACK:
 			begin
-				if(image_sel == 1'b1)
-					next_state = SM_CHANGE_DISP_IMAGE_0;
-				else
-					next_state = SM_CHANGE_DISP_IMAGE_1;
+				next_state = SM_MIN_MAX_START;
+			end	
+			
+			SM_MIN_MAX_START:
+			begin
+				next_state = SM_MIN_MAX_EXEC;
+			end	
+			
+			SM_MIN_MAX_EXEC:
+			begin
+				next_state = SM_MIN_MAX_DONE;
+			end	
+			
+			SM_MIN_MAX_DONE:
+			begin
+				next_state = SM_MIN_MAX_ACK;
 			end
 			
-			SM_CHANGE_DISP_IMAGE_0:
+			SM_MIN_MAX_ACK:
 			begin
 				next_state = SM_TAKE_PHOTO_START;
-			end
+			end	
 			
-			SM_CHANGE_DISP_IMAGE_1:
+			SM_ERROR:
 			begin
-				next_state = SM_TAKE_PHOTO_START;
+			end	
+			
+			default:
+			begin
+				next_state = SM_ERROR;
 			end
 		endcase
 	end
@@ -402,7 +328,6 @@ module mfp_nexys4_ddr(
 			begin
 				photo_start = 1'b0;
 				photo_ack = 1'b0;
-				image_sel = 1'b1;
 				default_flag = 1'b0;
 			end
 			
@@ -433,39 +358,67 @@ module mfp_nexys4_ddr(
 				photo_ack = 1'b1;
 				default_flag = 1'b0;
 			end
-			
-			SM_CHANGE_DISP_IMAGE_0:
+					
+			SM_MIN_MAX_START:
 			begin
-				image_sel = 1'b0;
+				photo_start = 1'b0;
+				photo_ack = 1'b1;
 				default_flag = 1'b0;
 			end
 			
-			SM_CHANGE_DISP_IMAGE_1:
+			SM_MIN_MAX_EXEC:
 			begin
-				image_sel = 1'b1;
+				photo_start = 1'b0;
+				photo_ack = 1'b1;
 				default_flag = 1'b0;
 			end
 			
+			SM_MIN_MAX_DONE:
+			begin
+				photo_start = 1'b0;
+				photo_ack = 1'b1;
+				default_flag = 1'b0;
+			end
+			
+			SM_MIN_MAX_ACK:
+			begin
+				photo_start = 1'b0;
+				photo_ack = 1'b0;
+				default_flag = 1'b0;
+			end
+			
+			SM_ERROR:
+			begin
+				photo_start = 1'b0;
+				photo_ack = 1'b0;
+				default_flag = 1'b1;
+			end
+
 			default:
 			begin
+				photo_start = 1'b0;
+				photo_ack = 1'b0;
 				default_flag = 1'b1;
 			end
 		endcase
 	end
 	
+	
 	wire capture_we_inter;
 	// assign capture_we = capture_we_inter;
+	// assign photo_done = 1'b1;
 	
 	
 	photo_sm photo_sm(
+		.clk(cam_pck),
 		.reset(CPU_RESETN_DB),
 		.start(photo_start),
-		.clk(cam_pck),
 		.ack(photo_ack),
 		.vsync(cam_vs),
 		.wen(capture_we_inter),
 		.wen_out(capture_we),
-		.done(photo_done)
+		.done(photo_done),
+		.error(photo_error)
 	);
 		
 	ov7670_capture_verilog cap1(

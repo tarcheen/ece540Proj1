@@ -16,14 +16,15 @@
 //////////
 
 module photo_sm(
+	input				clk,
 	input				reset,
 	input				start,
-	input				clk,
 	input				ack,
 	input				vsync,
 	input				wen,
 	output	reg 		wen_out,
-	output	reg			done
+	output	reg			done,
+	output	reg			error
 );
 
 	reg [2:0] curr_state;
@@ -35,6 +36,7 @@ module photo_sm(
     localparam SM_WAIT_FOR_VSYNC_0 = 3;
     localparam SM_WAIT_FOR_VSYNC_1 = 4;
     localparam SM_DONE = 5;
+    localparam SM_ERROR = 6;
     
 	
 	always@(posedge clk)
@@ -83,6 +85,15 @@ module photo_sm(
 					next_state = SM_WAIT_FOR_START;
 			end
 			
+			SM_ERROR:
+			begin
+			end
+			
+			default:
+			begin
+				next_state = SM_ERROR;
+			end
+			
 		endcase
 	end
 	
@@ -93,38 +104,57 @@ module photo_sm(
 			begin
 				wen_out = 1'b0;
 				done = 1'b0;
+				error = 1'b0;
 			end
 			
 			SM_WAIT_FOR_START:
 			begin
 				wen_out = 1'b0;
 				done = 1'b0;
+				error = 1'b0;
 			end
 			
 			SM_WAIT_FOR_VSYNC:
 			begin
 				wen_out = 1'b0;
 				done = 1'b0;
+				error = 1'b0;
 			end
 			
 			SM_WAIT_FOR_VSYNC_0:
 			begin
 				wen_out = wen;
 				done = 1'b0;
+				error = 1'b0;
 			end
 			
 			SM_WAIT_FOR_VSYNC_1:
 			begin
 				wen_out = wen;
 				done = 0;
+				error = 1'b0;
 			end
 			
 			SM_DONE:
 			begin
 				wen_out = 1'b0;
 				done = 1'b1;
+				error = 1'b0;
 			end
-
+			
+			SM_ERROR:
+			begin
+				wen_out = 1'b0;
+				done = 1'b0;
+				error = 1'b1;
+			end
+			
+			default:
+			begin
+				wen_out = 1'b0;
+				done = 1'b0;
+				error = 1'b1;
+			end
 		endcase
 	end
 
