@@ -32,7 +32,6 @@ module overlap_image(
 
 always@(*)
 begin
-	
 	if((pixel_column >= {3'b0,x_min}) && (pixel_column < {3'b0,x_cen}) 
 		&&(pixel_row >= {3'b0,y_min}) && (pixel_row < {3'b0,y_cen}))
 	begin
@@ -57,5 +56,15 @@ begin
 	begin
 		swap_pixel = 3'b000;
 	end
+	/*
+	if((pixel_column >= {3'b0,x_min}) && (pixel_column < {3'b0,x_max}) 
+		&&(pixel_row >= {3'b0,y_min}) && (pixel_row < {3'b0,y_max}))
+	begin
+		swap_pixel = 3'b100;
+	end
+	else
+	begin
+		swap_pixel = 3'b000;
+	end*/
 end
 endmodule
