@@ -1,0 +1,1186 @@
+
+program.elf:     file format elf32-tradlittlemips
+
+SYMBOL TABLE:
+9fc00000 l    d  .bootrom	00000000 .bootrom
+80000000 l    d  .exception_vector	00000000 .exception_vector
+80000200 l    d  .text	00000000 .text
+00000000 l    d  .debug_aranges	00000000 .debug_aranges
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .pdr	00000000 .pdr
+00000000 l    d  .gnu.attributes	00000000 .gnu.attributes
+00000000 l    df *ABS*	00000000 boot.o
+9fc00004 l       .bootrom	00000000 init_cp0
+9fc00018 l       .bootrom	00000000 init_tlb
+9fc00060 l       .bootrom	00000000 init_icache
+9fc00044 l       .bootrom	00000000 next_tlb_entry
+9fc000ac l       .bootrom	00000000 done_icache
+9fc0009c l       .bootrom	00000000 next_icache_tag
+9fc000ac l       .bootrom	00000000 enable_k0_cache
+9fc000cc l       .bootrom	00000000 init_dcache
+9fc0011c l       .bootrom	00000000 done_dcache
+9fc0010c l       .bootrom	00000000 next_dcache_tag
+9fc0013c l       .bootrom	00000000 all_done
+00000000 l    df *ABS*	00000000 exceptions.o
+80000000 l       .exception_vector	00000000 __tlb_refill_loop
+80000080 l       .exception_vector	00000000 __xtlb_refill_loop
+80000100 l       .exception_vector	00000000 __cache_error_loop
+80000180 l       .exception_vector	00000000 __general_exception_loop
+00000000 l    df *ABS*	00000000 main.o
+bf800000 l       *ABS*	00000000 PORT_LEDS
+bf800004 l       *ABS*	00000000 PORT_SLSWTCH
+bf800008 l       *ABS*	00000000 PORT_PBTNS
+bf700000 l       *ABS*	00000000 PORT_SEVENSEG_EN
+bf700004 l       *ABS*	00000000 PORT_SEVENSEG_HGH
+bf700008 l       *ABS*	00000000 PORT_SEVENSEG_LOW
+bf70000c l       *ABS*	00000000 PORT_SEVENSEG_DP
+00000000 l       *ABS*	00000000 SM_RESET_CAM
+00000001 l       *ABS*	00000000 SM_ENABLE_DISABLE
+00000002 l       *ABS*	00000000 SM_BLUE_GREEN
+00000003 l       *ABS*	00000000 SM_IMG
+80000204 l       .text	00000000 CURRENT_STATE
+80000205 l       .text	00000000 CURRENT_STATE_CAM
+80000206 l       .text	00000000 BOT_STABLE_ORIENTATION
+80000207 l       .text	00000000 BOT_PREV_STABLE_ORIENTATION
+80000208 l       .text	00000000 BOT_ORIENT
+80000209 l       .text	00000000 BOT_NEW_ORIENT
+8000020a l       .text	00000000 LOCx_REG_Prev
+8000020b l       .text	00000000 LOCy_REG_Prev
+80000218 l       .text	00000000 main_L1
+80000368 l       .text	00000000 dis_en
+80000234 l       .text	00000000 back_from_menu
+80000240 l       .text	00000000 addr_push_btn
+80000274 l       .text	00000000 dis_en_next
+800002bc l       .text	00000000 blue_green_next
+80000304 l       .text	00000000 img_sel_next
+8000039c l       .text	00000000 blue_green
+800003d0 l       .text	00000000 img_sel
+80000488 l       .text	00000000 reset_cam
+80000380 l       .text	00000000 set_dis_en
+8000034c l       .text	00000000 menu_loop
+800003b4 l       .text	00000000 set_blue_green
+800003e8 l       .text	00000000 set_img
+800004a0 l       .text	00000000 wr_alldigits
+80000394 l       .text	00000000 disable_cam
+800003c8 l       .text	00000000 make_green
+80000448 l       .text	00000000 make_two
+80000450 l       .text	00000000 make_three
+80000458 l       .text	00000000 make_four
+80000460 l       .text	00000000 make_five
+80000468 l       .text	00000000 make_six
+80000470 l       .text	00000000 make_seven
+80000478 l       .text	00000000 make_eight
+80000480 l       .text	00000000 make_one
+8000051c l       .text	00000000 turn_off_disp
+800004e4 l       .text	00000000 disp_en_dis
+800004f8 l       .text	00000000 disp_blu_gr
+80000508 l       .text	00000000 disp_img
+8000052c l       .text	00000000 skip_turn_off
+80000200  w    F .text	00000000 __exception_handle_verbose
+80000538 g       .text	00000000 _etext
+80008550 g       *ABS*	00000000 _gp
+00000020 g       *ABS*	00000000 __isr_vec_space
+00000000 g       *ABS*	00000000 __DYNAMIC
+00000001 g       *ABS*	00000000 __use_excpt_boot
+00000000  w      *UND*	00000000 _mips_xtlb_refill
+80000200  w    F .text	00000000 __register_excpt_boot
+80000200  w    F .text	00000000 __register_excpt_handler
+80000000 g       *ABS*	00000000 __app_start
+80000000 g       *ABS*	00000000 __flash_app_start
+80000200 g       .text	00000000 _ftext
+9fc00144 g     F .bootrom	0000006c _start
+80000000 g       *ABS*	00000000 __excpt_ebase
+8000020c g     O .text	00000000 main
+80000200 g     F .text	00000000 __exception_handle
+bfc00000 g       *ABS*	00000000 __entry
+80000200  w    F .text	00000004 __getargs
+00000000  w      *UND*	00000000 _mips_general_exception
+00000000  w      *UND*	00000000 _mips_tlb_refill
+00000000  w      *UND*	00000000 _mips_cache_error
+80040000 g       *ABS*	00000000 __stack
+80000000 g     F .exception_vector	00000198 __exception_entry
+80000000 g       .exception_vector	00000000 __base
+bfc00000 g       *ABS*	00000000 __flash_start
+9fc00000 g     F .bootrom	00000144 __reset_vector
+0001f800 g       *ABS*	00000000 __memory_size
+80008550 g       *ABS*	00000000 __global
+80000200  w    F .text	00000000 __isr_vec
+00000000 g       *ABS*	00000000 __isr_vec_count
+
+
+
+Disassembly of section .bootrom:
+
+9fc00000 <__reset_vector>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:20
+9fc00000:	40804800 	mtc0	zero,c0_count
+
+9fc00004 <init_cp0>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:27
+9fc00004:	3c030040 	lui	v1,0x40
+9fc00008:	34630004 	ori	v1,v1,0x4
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:28
+9fc0000c:	40836000 	mtc0	v1,c0_status
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:31
+9fc00010:	40806800 	mtc0	zero,c0_cause
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:34
+9fc00014:	40805800 	mtc0	zero,c0_compare
+
+9fc00018 <init_tlb>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:44
+9fc00018:	40038000 	mfc0	v1,c0_config
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:45
+9fc0001c:	7c6311c0 	ext	v1,v1,0x7,0x3
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:46
+9fc00020:	24070001 	li	a3,1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:47
+9fc00024:	1467000e 	bne	v1,a3,9fc00060 <init_icache>
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:50
+9fc00028:	40028001 	mfc0	v0,c0_config1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:51
+9fc0002c:	7c432e40 	ext	v1,v0,0x19,0x6
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:52
+9fc00030:	40801000 	mtc0	zero,c0_entrylo0
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:53
+9fc00034:	40801800 	mtc0	zero,c0_entrylo1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:54
+9fc00038:	40802800 	mtc0	zero,c0_pagemask
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:55
+9fc0003c:	40803000 	mtc0	zero,c0_wired
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:56
+9fc00040:	3c048000 	lui	a0,0x8000
+
+9fc00044 <next_tlb_entry>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:59
+9fc00044:	40830000 	mtc0	v1,c0_index
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:60
+9fc00048:	40845000 	mtc0	a0,c0_entryhi
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:61
+9fc0004c:	000000c0 	ehb
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:62
+9fc00050:	42000002 	tlbwi
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:63
+9fc00054:	20844000 	addi	a0,a0,16384
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:65
+9fc00058:	1460fffa 	bnez	v1,9fc00044 <next_tlb_entry>
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:66
+9fc0005c:	2063ffff 	addi	v1,v1,-1
+
+9fc00060 <init_icache>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:73
+9fc00060:	40028001 	mfc0	v0,c0_config1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:74
+9fc00064:	7c4314c0 	ext	v1,v0,0x13,0x3
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:75
+9fc00068:	10600010 	beqz	v1,9fc000ac <done_icache>
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:76
+9fc0006c:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:78
+9fc00070:	24060002 	li	a2,2
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:79
+9fc00074:	00661804 	sllv	v1,a2,v1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:81
+9fc00078:	7c441580 	ext	a0,v0,0x16,0x3
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:82
+9fc0007c:	24060040 	li	a2,64
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:83
+9fc00080:	00862004 	sllv	a0,a2,a0
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:85
+9fc00084:	7c451400 	ext	a1,v0,0x10,0x3
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:86
+9fc00088:	20a50001 	addi	a1,a1,1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:87
+9fc0008c:	70852002 	mul	a0,a0,a1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:88
+9fc00090:	3c068000 	lui	a2,0x8000
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:90
+9fc00094:	4080e000 	mtc0	zero,c0_taglo
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:91
+9fc00098:	00803825 	move	a3,a0
+
+9fc0009c <next_icache_tag>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:96
+9fc0009c:	bcc80000 	cache	0x8,0(a2)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:97
+9fc000a0:	20e7ffff 	addi	a3,a3,-1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:98
+9fc000a4:	14e0fffd 	bnez	a3,9fc0009c <next_icache_tag>
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:99
+9fc000a8:	00c33020 	add	a2,a2,v1
+
+9fc000ac <done_icache>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:111
+9fc000ac:	40028000 	mfc0	v0,c0_config
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:112
+9fc000b0:	24030003 	li	v1,3
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:113
+9fc000b4:	7c621004 	ins	v0,v1,0x0,0x3
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:114
+9fc000b8:	40828000 	mtc0	v0,c0_config
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:116
+9fc000bc:	3c069fc0 	lui	a2,0x9fc0
+9fc000c0:	24c600cc 	addiu	a2,a2,204
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:117
+9fc000c4:	00c00008 	jr	a2
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:118
+9fc000c8:	000000c0 	ehb
+
+9fc000cc <init_dcache>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:124
+9fc000cc:	40028001 	mfc0	v0,c0_config1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:125
+9fc000d0:	7c431280 	ext	v1,v0,0xa,0x3
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:126
+9fc000d4:	10600011 	beqz	v1,9fc0011c <done_dcache>
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:127
+9fc000d8:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:129
+9fc000dc:	24060002 	li	a2,2
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:130
+9fc000e0:	00661804 	sllv	v1,a2,v1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:132
+9fc000e4:	7c441340 	ext	a0,v0,0xd,0x3
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:133
+9fc000e8:	24060040 	li	a2,64
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:134
+9fc000ec:	00862004 	sllv	a0,a2,a0
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:136
+9fc000f0:	7c4511c0 	ext	a1,v0,0x7,0x3
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:137
+9fc000f4:	20a50001 	addi	a1,a1,1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:138
+9fc000f8:	70852002 	mul	a0,a0,a1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:139
+9fc000fc:	3c068000 	lui	a2,0x8000
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:141
+9fc00100:	4080e000 	mtc0	zero,c0_taglo
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:142
+9fc00104:	4080e002 	mtc0	zero,c0_taglo1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:143
+9fc00108:	00803825 	move	a3,a0
+
+9fc0010c <next_dcache_tag>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:148
+9fc0010c:	bcc90000 	cache	0x9,0(a2)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:149
+9fc00110:	20e7ffff 	addi	a3,a3,-1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:150
+9fc00114:	14e0fffd 	bnez	a3,9fc0010c <next_dcache_tag>
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:151
+9fc00118:	00c33020 	add	a2,a2,v1
+
+9fc0011c <done_dcache>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:156
+9fc0011c:	3c1f9fc0 	lui	ra,0x9fc0
+9fc00120:	27ff013c 	addiu	ra,ra,316
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:157
+9fc00124:	00002025 	move	a0,zero
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:159
+9fc00128:	3c029fc0 	lui	v0,0x9fc0
+9fc0012c:	24420144 	addiu	v0,v0,324
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:160
+9fc00130:	4082f000 	mtc0	v0,c0_errorepc
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:161
+9fc00134:	000000c0 	ehb
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:165
+9fc00138:	42000018 	eret
+
+9fc0013c <all_done>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:171
+9fc0013c:	1000ffff 	b	9fc0013c <all_done>
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/boot.S:172
+9fc00140:	00000000 	nop
+
+9fc00144 <_start>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:16
+9fc00144:	03e08025 	move	s0,ra
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:18
+9fc00148:	3c1c8001 	lui	gp,0x8001
+9fc0014c:	279c8550 	addiu	gp,gp,-31408
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:20
+9fc00150:	3c1d8004 	lui	sp,0x8004
+9fc00154:	27bd0000 	addiu	sp,sp,0
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:22
+9fc00158:	3c028000 	lui	v0,0x8000
+9fc0015c:	24420550 	addiu	v0,v0,1360
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:23
+9fc00160:	3c038000 	lui	v1,0x8000
+9fc00164:	24630550 	addiu	v1,v1,1360
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:24
+9fc00168:	10430004 	beq	v0,v1,9fc0017c <_start+0x38>
+9fc0016c:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:26
+9fc00170:	24420004 	addiu	v0,v0,4
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:28
+9fc00174:	1443fffe 	bne	v0,v1,9fc00170 <_start+0x2c>
+9fc00178:	ac40fffc 	sw	zero,-4(v0)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:31
+9fc0017c:	24040000 	li	a0,0
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:33
+9fc00180:	27bdfff0 	addiu	sp,sp,-16
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:37
+9fc00184:	40026000 	mfc0	v0,c0_status
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:38
+9fc00188:	7c02b584 	ins	v0,zero,0x16,0x1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:39
+9fc0018c:	40826000 	mtc0	v0,c0_status
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:40
+9fc00190:	000000c0 	ehb
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:43
+9fc00194:	3c088000 	lui	t0,0x8000
+9fc00198:	2508020c 	addiu	t0,t0,524
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:44
+9fc0019c:	0100f809 	jalr	t0
+9fc001a0:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:47
+9fc001a4:	0200f825 	move	ra,s0
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/crt0.S:48
+9fc001a8:	03e00008 	jr	ra
+9fc001ac:	00000000 	nop
+
+Disassembly of section .exception_vector:
+
+80000000 <__exception_entry>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/exceptions.S:45
+80000000:	3c1b0000 	lui	k1,0x0
+80000004:	277b0000 	addiu	k1,k1,0
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/exceptions.S:46
+80000008:	1360fffd 	beqz	k1,80000000 <__exception_entry>
+8000000c:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/exceptions.S:47
+80000010:	03600008 	jr	k1
+80000014:	00000000 	nop
+	...
+
+80000080 <__xtlb_refill_loop>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/exceptions.S:52
+80000080:	3c1b0000 	lui	k1,0x0
+80000084:	277b0000 	addiu	k1,k1,0
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/exceptions.S:53
+80000088:	1360fffd 	beqz	k1,80000080 <__xtlb_refill_loop>
+8000008c:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/exceptions.S:54
+80000090:	03600008 	jr	k1
+80000094:	00000000 	nop
+	...
+
+80000100 <__cache_error_loop>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/exceptions.S:59
+80000100:	3c1b0000 	lui	k1,0x0
+80000104:	277b0000 	addiu	k1,k1,0
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/exceptions.S:60
+80000108:	1360fffd 	beqz	k1,80000100 <__cache_error_loop>
+8000010c:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/exceptions.S:61
+80000110:	03600008 	jr	k1
+80000114:	00000000 	nop
+	...
+
+80000180 <__general_exception_loop>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/exceptions.S:66
+80000180:	3c1b0000 	lui	k1,0x0
+80000184:	277b0000 	addiu	k1,k1,0
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/exceptions.S:67
+80000188:	1360fffd 	beqz	k1,80000180 <__general_exception_loop>
+8000018c:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/exceptions.S:68
+80000190:	03600008 	jr	k1
+80000194:	00000000 	nop
+	...
+
+Disassembly of section .text:
+
+80000200 <__exception_handle>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/dummy.S:59
+80000200:	00000000 	nop
+
+80000204 <CURRENT_STATE>:
+	...
+
+80000205 <CURRENT_STATE_CAM>:
+	...
+
+80000206 <BOT_STABLE_ORIENTATION>:
+	...
+
+80000207 <BOT_PREV_STABLE_ORIENTATION>:
+	...
+
+80000208 <BOT_ORIENT>:
+	...
+
+80000209 <BOT_NEW_ORIENT>:
+	...
+
+8000020a <LOCx_REG_Prev>:
+	...
+
+8000020b <LOCy_REG_Prev>:
+	...
+
+8000020c <main>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:64
+8000020c:	20170e1c 	addi	s7,zero,3612
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:65
+80000210:	20140b1a 	addi	s4,zero,2842
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:66
+80000214:	20130001 	addi	s3,zero,1
+
+80000218 <main_L1>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:74
+80000218:	3c0dbf80 	lui	t5,0xbf80
+8000021c:	35ad0008 	ori	t5,t5,0x8
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:75
+80000220:	8db50000 	lw	s5,0(t5)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:77
+80000224:	32b60002 	andi	s6,s5,0x2
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:78
+80000228:	24010002 	li	at,2
+8000022c:	12c1004e 	beq	s6,at,80000368 <dis_en>
+80000230:	00000000 	nop
+
+80000234 <back_from_menu>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:82
+80000234:	1000fff8 	b	80000218 <main_L1>
+80000238:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:83
+8000023c:	00000000 	nop
+
+80000240 <addr_push_btn>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:88
+80000240:	3c098000 	lui	t1,0x8000
+80000244:	81290205 	lb	t1,517(t1)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:89
+80000248:	24010001 	li	at,1
+8000024c:	11210009 	beq	t1,at,80000274 <dis_en_next>
+80000250:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:90
+80000254:	24010002 	li	at,2
+80000258:	11210018 	beq	t1,at,800002bc <blue_green_next>
+8000025c:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:91
+80000260:	24010003 	li	at,3
+80000264:	11210027 	beq	t1,at,80000304 <img_sel_next>
+80000268:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:92
+8000026c:	0800008d 	j	80000234 <back_from_menu>
+80000270:	00000000 	nop
+
+80000274 <dis_en_next>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:96
+80000274:	32b60010 	andi	s6,s5,0x10
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:97
+80000278:	24010010 	li	at,16
+8000027c:	12c10047 	beq	s6,at,8000039c <blue_green>
+80000280:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:99
+80000284:	32b60008 	andi	s6,s5,0x8
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:100
+80000288:	24010008 	li	at,8
+8000028c:	12c10050 	beq	s6,at,800003d0 <img_sel>
+80000290:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:102
+80000294:	32b60004 	andi	s6,s5,0x4
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:103
+80000298:	24010004 	li	at,4
+8000029c:	12c1007a 	beq	s6,at,80000488 <reset_cam>
+800002a0:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:105
+800002a4:	32b60001 	andi	s6,s5,0x1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:106
+800002a8:	24010001 	li	at,1
+800002ac:	12c10034 	beq	s6,at,80000380 <set_dis_en>
+800002b0:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:108
+800002b4:	080000d3 	j	8000034c <menu_loop>
+800002b8:	00000000 	nop
+
+800002bc <blue_green_next>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:112
+800002bc:	32b60010 	andi	s6,s5,0x10
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:113
+800002c0:	24010010 	li	at,16
+800002c4:	12c10042 	beq	s6,at,800003d0 <img_sel>
+800002c8:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:115
+800002cc:	32b60008 	andi	s6,s5,0x8
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:116
+800002d0:	24010008 	li	at,8
+800002d4:	12c10024 	beq	s6,at,80000368 <dis_en>
+800002d8:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:118
+800002dc:	32b60004 	andi	s6,s5,0x4
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:119
+800002e0:	24010004 	li	at,4
+800002e4:	12c10068 	beq	s6,at,80000488 <reset_cam>
+800002e8:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:121
+800002ec:	32b60001 	andi	s6,s5,0x1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:122
+800002f0:	24010001 	li	at,1
+800002f4:	12c1002f 	beq	s6,at,800003b4 <set_blue_green>
+800002f8:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:124
+800002fc:	080000d3 	j	8000034c <menu_loop>
+80000300:	00000000 	nop
+
+80000304 <img_sel_next>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:128
+80000304:	32b60010 	andi	s6,s5,0x10
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:129
+80000308:	24010010 	li	at,16
+8000030c:	12c10016 	beq	s6,at,80000368 <dis_en>
+80000310:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:131
+80000314:	32b60008 	andi	s6,s5,0x8
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:132
+80000318:	24010008 	li	at,8
+8000031c:	12c1001f 	beq	s6,at,8000039c <blue_green>
+80000320:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:134
+80000324:	32b60004 	andi	s6,s5,0x4
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:135
+80000328:	24010004 	li	at,4
+8000032c:	12c10056 	beq	s6,at,80000488 <reset_cam>
+80000330:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:137
+80000334:	32b60001 	andi	s6,s5,0x1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:138
+80000338:	24010001 	li	at,1
+8000033c:	12c1002a 	beq	s6,at,800003e8 <set_img>
+80000340:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:140
+80000344:	080000d3 	j	8000034c <menu_loop>
+80000348:	00000000 	nop
+
+8000034c <menu_loop>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:143
+8000034c:	3c0dbf80 	lui	t5,0xbf80
+80000350:	35ad0008 	ori	t5,t5,0x8
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:144
+80000354:	8db50000 	lw	s5,0(t5)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:145
+80000358:	12a0fffc 	beqz	s5,8000034c <menu_loop>
+8000035c:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:146
+80000360:	08000090 	j	80000240 <addr_push_btn>
+80000364:	00000000 	nop
+
+80000368 <dis_en>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:149
+80000368:	20090001 	addi	t1,zero,1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:150
+8000036c:	3c018000 	lui	at,0x8000
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:151
+80000370:	0c000128 	jal	800004a0 <wr_alldigits>
+80000374:	a0290205 	sb	t1,517(at)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:153
+80000378:	080000d3 	j	8000034c <menu_loop>
+8000037c:	00000000 	nop
+
+80000380 <set_dis_en>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:156
+80000380:	24010e1c 	li	at,3612
+80000384:	12e10003 	beq	s7,at,80000394 <disable_cam>
+80000388:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:158
+8000038c:	080000da 	j	80000368 <dis_en>
+80000390:	20170e1c 	addi	s7,zero,3612
+
+80000394 <disable_cam>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:161
+80000394:	080000da 	j	80000368 <dis_en>
+80000398:	20170d18 	addi	s7,zero,3352
+
+8000039c <blue_green>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:164
+8000039c:	20090002 	addi	t1,zero,2
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:165
+800003a0:	3c018000 	lui	at,0x8000
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:166
+800003a4:	0c000128 	jal	800004a0 <wr_alldigits>
+800003a8:	a0290205 	sb	t1,517(at)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:169
+800003ac:	080000d3 	j	8000034c <menu_loop>
+800003b0:	00000000 	nop
+
+800003b4 <set_blue_green>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:173
+800003b4:	24010b1a 	li	at,2842
+800003b8:	12810003 	beq	s4,at,800003c8 <make_green>
+800003bc:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:175
+800003c0:	080000e7 	j	8000039c <blue_green>
+800003c4:	20140b1a 	addi	s4,zero,2842
+
+800003c8 <make_green>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:179
+800003c8:	080000e7 	j	8000039c <blue_green>
+800003cc:	20141f1b 	addi	s4,zero,7963
+
+800003d0 <img_sel>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:182
+800003d0:	20090003 	addi	t1,zero,3
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:183
+800003d4:	3c018000 	lui	at,0x8000
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:184
+800003d8:	0c000128 	jal	800004a0 <wr_alldigits>
+800003dc:	a0290205 	sb	t1,517(at)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:186
+800003e0:	080000d3 	j	8000034c <menu_loop>
+800003e4:	00000000 	nop
+
+800003e8 <set_img>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:189
+800003e8:	24010001 	li	at,1
+800003ec:	12610016 	beq	s3,at,80000448 <make_two>
+800003f0:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:190
+800003f4:	24010002 	li	at,2
+800003f8:	12610015 	beq	s3,at,80000450 <make_three>
+800003fc:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:191
+80000400:	24010003 	li	at,3
+80000404:	12610014 	beq	s3,at,80000458 <make_four>
+80000408:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:192
+8000040c:	24010004 	li	at,4
+80000410:	12610013 	beq	s3,at,80000460 <make_five>
+80000414:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:193
+80000418:	24010005 	li	at,5
+8000041c:	12610012 	beq	s3,at,80000468 <make_six>
+80000420:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:194
+80000424:	24010006 	li	at,6
+80000428:	12610011 	beq	s3,at,80000470 <make_seven>
+8000042c:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:195
+80000430:	24010007 	li	at,7
+80000434:	12610010 	beq	s3,at,80000478 <make_eight>
+80000438:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:196
+8000043c:	24010008 	li	at,8
+80000440:	1261000f 	beq	s3,at,80000480 <make_one>
+80000444:	00000000 	nop
+
+80000448 <make_two>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:199
+80000448:	080000f4 	j	800003d0 <img_sel>
+8000044c:	20130002 	addi	s3,zero,2
+
+80000450 <make_three>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:202
+80000450:	080000f4 	j	800003d0 <img_sel>
+80000454:	20130003 	addi	s3,zero,3
+
+80000458 <make_four>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:205
+80000458:	080000f4 	j	800003d0 <img_sel>
+8000045c:	20130004 	addi	s3,zero,4
+
+80000460 <make_five>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:208
+80000460:	080000f4 	j	800003d0 <img_sel>
+80000464:	20130005 	addi	s3,zero,5
+
+80000468 <make_six>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:211
+80000468:	080000f4 	j	800003d0 <img_sel>
+8000046c:	20130006 	addi	s3,zero,6
+
+80000470 <make_seven>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:214
+80000470:	080000f4 	j	800003d0 <img_sel>
+80000474:	20130007 	addi	s3,zero,7
+
+80000478 <make_eight>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:217
+80000478:	080000f4 	j	800003d0 <img_sel>
+8000047c:	20130008 	addi	s3,zero,8
+
+80000480 <make_one>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:220
+80000480:	080000f4 	j	800003d0 <img_sel>
+80000484:	20130001 	addi	s3,zero,1
+
+80000488 <reset_cam>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:222
+80000488:	20090000 	addi	t1,zero,0
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:223
+8000048c:	3c018000 	lui	at,0x8000
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:224
+80000490:	0c000128 	jal	800004a0 <wr_alldigits>
+80000494:	a0290205 	sb	t1,517(at)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:225
+80000498:	0800008d 	j	80000234 <back_from_menu>
+8000049c:	00000000 	nop
+
+800004a0 <wr_alldigits>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:231
+800004a0:	3c12bf70 	lui	s2,0xbf70
+800004a4:	36520004 	ori	s2,s2,0x4
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:232
+800004a8:	3c02bf70 	lui	v0,0xbf70
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:233
+800004ac:	241900ec 	li	t9,236
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:234
+800004b0:	ac590000 	sw	t9,0(v0)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:235
+800004b4:	3c02bf70 	lui	v0,0xbf70
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:237
+800004b8:	11200018 	beqz	t1,8000051c <turn_off_disp>
+800004bc:	34420008 	ori	v0,v0,0x8
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:238
+800004c0:	24010001 	li	at,1
+800004c4:	11210007 	beq	t1,at,800004e4 <disp_en_dis>
+800004c8:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:239
+800004cc:	24010002 	li	at,2
+800004d0:	11210009 	beq	t1,at,800004f8 <disp_blu_gr>
+800004d4:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:240
+800004d8:	24010003 	li	at,3
+800004dc:	1121000a 	beq	t1,at,80000508 <disp_img>
+800004e0:	00000000 	nop
+
+800004e4 <disp_en_dis>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:242
+800004e4:	ac570000 	sw	s7,0(v0)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:243
+800004e8:	20190001 	addi	t9,zero,1
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:244
+800004ec:	ae590000 	sw	t9,0(s2)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:246
+800004f0:	0800014b 	j	8000052c <skip_turn_off>
+800004f4:	00000000 	nop
+
+800004f8 <disp_blu_gr>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:248
+800004f8:	ac540000 	sw	s4,0(v0)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:249
+800004fc:	20190002 	addi	t9,zero,2
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:251
+80000500:	0800014b 	j	8000052c <skip_turn_off>
+80000504:	ae590000 	sw	t9,0(s2)
+
+80000508 <disp_img>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:253
+80000508:	ac530000 	sw	s3,0(v0)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:254
+8000050c:	20190003 	addi	t9,zero,3
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:255
+80000510:	ae590000 	sw	t9,0(s2)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:257
+80000514:	0800014b 	j	8000052c <skip_turn_off>
+80000518:	00000000 	nop
+
+8000051c <turn_off_disp>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:259
+8000051c:	241900ff 	li	t9,255
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:260
+80000520:	3c02bf70 	lui	v0,0xbf70
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:261
+80000524:	ac590000 	sw	t9,0(v0)
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:262
+80000528:	00000000 	nop
+
+8000052c <skip_turn_off>:
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:264
+8000052c:	03e00008 	jr	ra
+80000530:	00000000 	nop
+\\khensu\Home01\mirlohi\Desktop\proj2-hamed_jagir\firmware_part1\Proj2Demo/main.S:265
+80000534:	00000000 	nop
+
+Disassembly of section .debug_aranges:
+
+00000000 <.debug_aranges>:
+   0:	0000001c 	0x1c
+   4:	00000002 	srl	zero,zero,0x0
+   8:	00040000 	sll	zero,a0,0x0
+   c:	00000000 	nop
+  10:	9fc00144 	0x9fc00144
+  14:	0000006c 	0x6c
+	...
+  20:	0000001c 	0x1c
+  24:	007b0002 	0x7b0002
+  28:	00040000 	sll	zero,a0,0x0
+  2c:	00000000 	nop
+  30:	9fc00000 	0x9fc00000
+  34:	00000144 	0x144
+	...
+  40:	0000001c 	0x1c
+  44:	00f60002 	0xf60002
+  48:	00040000 	sll	zero,a0,0x0
+  4c:	00000000 	nop
+  50:	80000000 	lb	zero,0(zero)
+  54:	00000198 	0x198
+	...
+  60:	0000001c 	0x1c
+  64:	01770002 	0x1770002
+  68:	00040000 	sll	zero,a0,0x0
+  6c:	00000000 	nop
+  70:	80000200 	lb	zero,512(zero)
+  74:	00000004 	sllv	zero,zero,zero
+	...
+  80:	0000001c 	0x1c
+  84:	01f30002 	0x1f30002
+  88:	00040000 	sll	zero,a0,0x0
+  8c:	00000000 	nop
+  90:	80000204 	lb	zero,516(zero)
+  94:	00000334 	teq	zero,zero,0xc
+	...
+
+Disassembly of section .debug_info:
+
+00000000 <.debug_info>:
+   0:	00000077 	0x77
+   4:	00000002 	srl	zero,zero,0x0
+   8:	01040000 	0x1040000
+   c:	00000000 	nop
+  10:	9fc00144 	0x9fc00144
+  14:	9fc001b0 	0x9fc001b0
+  18:	30747263 	andi	s4,v1,0x7263
+  1c:	5c00532e 	bgtzl	zero,14cd8 <__isr_vec_space+0x14cb8>
+  20:	65686b5c 	0x65686b5c
+  24:	5c75736e 	0x5c75736e
+  28:	656d6f48 	0x656d6f48
+  2c:	6d5c3130 	0x6d5c3130
+  30:	6f6c7269 	0x6f6c7269
+  34:	445c6968 	0x445c6968
+  38:	746b7365 	jalx	1adcd94 <__memory_size+0x1abd594>
+  3c:	705c706f 	0x705c706f
+  40:	326a6f72 	andi	t2,s3,0x6f72
+  44:	6d61682d 	0x6d61682d
+  48:	6a5f6465 	0x6a5f6465
+  4c:	72696761 	0x72696761
+  50:	7269665c 	udi12	s3,t1,t4,0x19
+  54:	7261776d 	s16sdi	xr13,s3,186,ptn0
+  58:	61705f65 	0x61705f65
+  5c:	5c317472 	0x5c317472
+  60:	6a6f7250 	0x6a6f7250
+  64:	6d654432 	0x6d654432
+  68:	4e47006f 	c3	0x47006f
+  6c:	53412055 	beql	k0,at,81c4 <__isr_vec_space+0x81a4>
+  70:	322e3220 	andi	t6,s1,0x3220
+  74:	30392e34 	andi	t9,at,0x2e34
+  78:	77800100 	jalx	e000400 <__memory_size+0xdfe0c00>
+  7c:	02000000 	0x2000000
+  80:	00001400 	sll	v0,zero,0x10
+  84:	48010400 	0x48010400
+  88:	00000000 	nop
+  8c:	449fc000 	mtc1	ra,$f24
+  90:	629fc001 	0x629fc001
+  94:	2e746f6f 	sltiu	s4,s3,28527
+  98:	5c5c0053 	0x5c5c0053
+  9c:	6e65686b 	0x6e65686b
+  a0:	485c7573 	0x485c7573
+  a4:	30656d6f 	andi	a1,v1,0x6d6f
+  a8:	696d5c31 	0x696d5c31
+  ac:	686f6c72 	0x686f6c72
+  b0:	65445c69 	0x65445c69
+  b4:	6f746b73 	0x6f746b73
+  b8:	72705c70 	d32sll	xr1,xr7,xr1,xr12,9
+  bc:	2d326a6f 	sltiu	s2,t1,27247
+  c0:	656d6168 	0x656d6168
+  c4:	616a5f64 	0x616a5f64
+  c8:	5c726967 	0x5c726967
+  cc:	6d726966 	0x6d726966
+  d0:	65726177 	0x65726177
+  d4:	7261705f 	udi15	s3,at,t6,0x1
+  d8:	505c3174 	beql	v0,gp,c6ac <__isr_vec_space+0xc68c>
+  dc:	326a6f72 	andi	t2,s3,0x6f72
+  e0:	6f6d6544 	0x6f6d6544
+  e4:	554e4700 	bnel	t2,t6,11ce8 <__isr_vec_space+0x11cc8>
+  e8:	20534120 	addi	s3,v0,16672
+  ec:	34322e32 	ori	s2,at,0x2e32
+  f0:	0030392e 	0x30392e
+  f4:	007d8001 	movt	s0,v1,$fcc7
+  f8:	00020000 	sll	zero,v0,0x0
+  fc:	00000028 	0x28
+ 100:	00ce0104 	0xce0104
+ 104:	00000000 	nop
+ 108:	01988000 	0x1988000
+ 10c:	78658000 	andi.b	$w0,$w16,0x65
+ 110:	74706563 	jalx	1c1958c <__memory_size+0x1bf9d8c>
+ 114:	736e6f69 	0x736e6f69
+ 118:	5c00532e 	bgtzl	zero,14dd4 <__isr_vec_space+0x14db4>
+ 11c:	65686b5c 	0x65686b5c
+ 120:	5c75736e 	0x5c75736e
+ 124:	656d6f48 	0x656d6f48
+ 128:	6d5c3130 	0x6d5c3130
+ 12c:	6f6c7269 	0x6f6c7269
+ 130:	445c6968 	0x445c6968
+ 134:	746b7365 	jalx	1adcd94 <__memory_size+0x1abd594>
+ 138:	705c706f 	0x705c706f
+ 13c:	326a6f72 	andi	t2,s3,0x6f72
+ 140:	6d61682d 	0x6d61682d
+ 144:	6a5f6465 	0x6a5f6465
+ 148:	72696761 	0x72696761
+ 14c:	7269665c 	udi12	s3,t1,t4,0x19
+ 150:	7261776d 	s16sdi	xr13,s3,186,ptn0
+ 154:	61705f65 	0x61705f65
+ 158:	5c317472 	0x5c317472
+ 15c:	6a6f7250 	0x6a6f7250
+ 160:	6d654432 	0x6d654432
+ 164:	4e47006f 	c3	0x47006f
+ 168:	53412055 	beql	k0,at,82c0 <__isr_vec_space+0x82a0>
+ 16c:	322e3220 	andi	t6,s1,0x3220
+ 170:	30392e34 	andi	t9,at,0x2e34
+ 174:	78800100 	andi.b	$w4,$w0,0x80
+ 178:	02000000 	0x2000000
+ 17c:	00003c00 	sll	a3,zero,0x10
+ 180:	1b010400 	0x1b010400
+ 184:	00000001 	movf	zero,zero,$fcc0
+ 188:	04800002 	bltz	a0,194 <__isr_vec_space+0x174>
+ 18c:	64800002 	0x64800002
+ 190:	796d6d75 	0x796d6d75
+ 194:	5c00532e 	bgtzl	zero,14e50 <__isr_vec_space+0x14e30>
+ 198:	65686b5c 	0x65686b5c
+ 19c:	5c75736e 	0x5c75736e
+ 1a0:	656d6f48 	0x656d6f48
+ 1a4:	6d5c3130 	0x6d5c3130
+ 1a8:	6f6c7269 	0x6f6c7269
+ 1ac:	445c6968 	0x445c6968
+ 1b0:	746b7365 	jalx	1adcd94 <__memory_size+0x1abd594>
+ 1b4:	705c706f 	0x705c706f
+ 1b8:	326a6f72 	andi	t2,s3,0x6f72
+ 1bc:	6d61682d 	0x6d61682d
+ 1c0:	6a5f6465 	0x6a5f6465
+ 1c4:	72696761 	0x72696761
+ 1c8:	7269665c 	udi12	s3,t1,t4,0x19
+ 1cc:	7261776d 	s16sdi	xr13,s3,186,ptn0
+ 1d0:	61705f65 	0x61705f65
+ 1d4:	5c317472 	0x5c317472
+ 1d8:	6a6f7250 	0x6a6f7250
+ 1dc:	6d654432 	0x6d654432
+ 1e0:	4e47006f 	c3	0x47006f
+ 1e4:	53412055 	beql	k0,at,833c <__isr_vec_space+0x831c>
+ 1e8:	322e3220 	andi	t6,s1,0x3220
+ 1ec:	30392e34 	andi	t9,at,0x2e34
+ 1f0:	77800100 	jalx	e000400 <__memory_size+0xdfe0c00>
+ 1f4:	02000000 	0x2000000
+ 1f8:	00005000 	sll	t2,zero,0x0
+ 1fc:	52010400 	beql	s0,at,1200 <__isr_vec_space+0x11e0>
+ 200:	04000001 	bltz	zero,208 <__isr_vec_space+0x1e8>
+ 204:	38800002 	xori	zero,a0,0x2
+ 208:	6d800005 	0x6d800005
+ 20c:	2e6e6961 	sltiu	t6,s3,26977
+ 210:	5c5c0053 	0x5c5c0053
+ 214:	6e65686b 	0x6e65686b
+ 218:	485c7573 	0x485c7573
+ 21c:	30656d6f 	andi	a1,v1,0x6d6f
+ 220:	696d5c31 	0x696d5c31
+ 224:	686f6c72 	0x686f6c72
+ 228:	65445c69 	0x65445c69
+ 22c:	6f746b73 	0x6f746b73
+ 230:	72705c70 	d32sll	xr1,xr7,xr1,xr12,9
+ 234:	2d326a6f 	sltiu	s2,t1,27247
+ 238:	656d6168 	0x656d6168
+ 23c:	616a5f64 	0x616a5f64
+ 240:	5c726967 	0x5c726967
+ 244:	6d726966 	0x6d726966
+ 248:	65726177 	0x65726177
+ 24c:	7261705f 	udi15	s3,at,t6,0x1
+ 250:	505c3174 	beql	v0,gp,c824 <__isr_vec_space+0xc804>
+ 254:	326a6f72 	andi	t2,s3,0x6f72
+ 258:	6f6d6544 	0x6f6d6544
+ 25c:	554e4700 	bnel	t2,t6,11e60 <__isr_vec_space+0x11e40>
+ 260:	20534120 	addi	s3,v0,16672
+ 264:	34322e32 	ori	s2,at,0x2e32
+ 268:	0030392e 	0x30392e
+ 26c:	Address 0x000000000000026c is out of bounds.
+
+
+Disassembly of section .debug_abbrev:
+
+00000000 <.debug_abbrev>:
+   0:	10001101 	b	4408 <__isr_vec_space+0x43e8>
+   4:	12011106 	beq	s0,at,4420 <__isr_vec_space+0x4400>
+   8:	1b080301 	0x1b080301
+   c:	13082508 	beq	t8,t0,9430 <__isr_vec_space+0x9410>
+  10:	00000005 	lsa	zero,zero,zero,0x1
+  14:	10001101 	b	441c <__isr_vec_space+0x43fc>
+  18:	12011106 	beq	s0,at,4434 <__isr_vec_space+0x4414>
+  1c:	1b080301 	0x1b080301
+  20:	13082508 	beq	t8,t0,9444 <__isr_vec_space+0x9424>
+  24:	00000005 	lsa	zero,zero,zero,0x1
+  28:	10001101 	b	4430 <__isr_vec_space+0x4410>
+  2c:	12011106 	beq	s0,at,4448 <__isr_vec_space+0x4428>
+  30:	1b080301 	0x1b080301
+  34:	13082508 	beq	t8,t0,9458 <__isr_vec_space+0x9438>
+  38:	00000005 	lsa	zero,zero,zero,0x1
+  3c:	10001101 	b	4444 <__isr_vec_space+0x4424>
+  40:	12011106 	beq	s0,at,445c <__isr_vec_space+0x443c>
+  44:	1b080301 	0x1b080301
+  48:	13082508 	beq	t8,t0,946c <__isr_vec_space+0x944c>
+  4c:	00000005 	lsa	zero,zero,zero,0x1
+  50:	10001101 	b	4458 <__isr_vec_space+0x4438>
+  54:	12011106 	beq	s0,at,4470 <__isr_vec_space+0x4450>
+  58:	1b080301 	0x1b080301
+  5c:	13082508 	beq	t8,t0,9480 <__isr_vec_space+0x9460>
+  60:	00000005 	lsa	zero,zero,zero,0x1
+
+Disassembly of section .debug_line:
+
+00000000 <.debug_line>:
+   0:	00000044 	0x44
+   4:	001d0002 	srl	zero,sp,0x0
+   8:	01010000 	0x1010000
+   c:	000d0efb 	0xd0efb
+  10:	01010101 	0x1010101
+  14:	01000000 	0x1000000
+  18:	00010000 	sll	zero,at,0x0
+  1c:	30747263 	andi	s4,v1,0x7263
+  20:	0000532e 	0x532e
+  24:	00000000 	nop
+  28:	01440205 	0x1440205
+  2c:	0f039fc0 	jal	c0e7f00 <__memory_size+0xc0c8700>
+  30:	84844c01 	lh	a0,19457(a0)
+  34:	4b848383 	c2	0x1848383
+  38:	4e4c8513 	c3	0x4c8513
+  3c:	4d4b4b4b 	0x4d4b4b4b
+  40:	024b8583 	0x24b8583
+  44:	01010008 	0x1010008
+  48:	00000082 	srl	zero,zero,0x2
+  4c:	001d0002 	srl	zero,sp,0x0
+  50:	01010000 	0x1010000
+  54:	000d0efb 	0xd0efb
+  58:	01010101 	0x1010101
+  5c:	01000000 	0x1000000
+  60:	00010000 	sll	zero,at,0x0
+  64:	746f6f62 	jalx	1bdbd88 <__memory_size+0x1bbc588>
+  68:	0000532e 	0x532e
+  6c:	00000000 	nop
+  70:	00000205 	0x205
+  74:	13039fc0 	beq	t8,v1,fffe7f78 <__entry+0x403e7f78>
+  78:	4d835101 	0x4d835101
+  7c:	4a0a034d 	c2	0xa034d
+  80:	4d4b4b4b 	0x4d4b4b4b
+  84:	4b4b4b4b 	c2	0x14b4b4b
+  88:	4b4d4b4b 	c2	0x14d4b4b
+  8c:	4c4b4b4b 	0x4c4b4b4b
+  90:	4b4b514b 	c2	0x14b514b
+  94:	4c4b4c4b 	0x4c4b4c4b
+  98:	4b4c4b4b 	c2	0x14c4b4b
+  9c:	4b4c4b4b 	c2	0x14c4b4b
+  a0:	4b4b4b4f 	c2	0x14b4b4f
+  a4:	4b4a0c03 	c2	0x14a0c03
+  a8:	834c4b4b 	lb	t4,19275(k0)
+  ac:	4b4b504b 	c2	0x14b504b
+  b0:	4c4b4c4b 	0x4c4b4c4b
+  b4:	4b4c4b4b 	c2	0x14c4b4b
+  b8:	4b4c4b4b 	c2	0x14c4b4b
+  bc:	4b4b4f4b 	c2	0x14b4f4b
+  c0:	4c834f4b 	0x4c834f4b
+  c4:	504e4b83 	beql	v0,t6,12ed4 <__isr_vec_space+0x12eb4>
+  c8:	0004024b 	0x4024b
+  cc:	00490101 	0x490101
+  d0:	00020000 	sll	zero,v0,0x0
+  d4:	00000023 	negu	zero,zero
+  d8:	0efb0101 	jal	bec0404 <__memory_size+0xbea0c04>
+  dc:	0101000d 	break	0x101
+  e0:	00000101 	0x101
+  e4:	00000100 	sll	zero,zero,0x4
+  e8:	78650001 	bmnzi.b	$w0,$w0,0x65
+  ec:	74706563 	jalx	1c1958c <__memory_size+0x1bf9d8c>
+  f0:	736e6f69 	0x736e6f69
+  f4:	0000532e 	0x532e
+  f8:	00000000 	nop
+  fc:	00000205 	0x205
+ 100:	2c038000 	sltiu	v1,zero,-32768
+ 104:	02838301 	0x2838301
+ 108:	83831770 	lb	v1,6000(gp)
+ 10c:	83177002 	lb	s7,28674(t8)
+ 110:	17700283 	bne	k1,s0,b20 <__isr_vec_space+0xb00>
+ 114:	08028383 	j	a0e0c <__memory_size+0x8160c>
+ 118:	33010100 	andi	at,t8,0x100
+ 11c:	02000000 	0x2000000
+ 120:	00001e00 	sll	v1,zero,0x18
+ 124:	fb010100 	sdc2	$1,256(t8)
+ 128:	01000d0e 	0x1000d0e
+ 12c:	00010101 	0x10101
+ 130:	00010000 	sll	zero,at,0x0
+ 134:	64000100 	0x64000100
+ 138:	796d6d75 	0x796d6d75
+ 13c:	0000532e 	0x532e
+ 140:	00000000 	nop
+ 144:	02000205 	0x2000205
+ 148:	3a038000 	xori	v1,s0,0x8000
+ 14c:	00040201 	0x40201
+ 150:	00ad0101 	0xad0101
+ 154:	00020000 	sll	zero,v0,0x0
+ 158:	0000001d 	0x1d
+ 15c:	0efb0101 	jal	bec0404 <__memory_size+0xbea0c04>
+ 160:	0101000d 	break	0x101
+ 164:	00000101 	0x101
+ 168:	00000100 	sll	zero,zero,0x4
+ 16c:	616d0001 	0x616d0001
+ 170:	532e6e69 	beql	t9,t6,1bb18 <__isr_vec_space+0x1baf8>
+ 174:	00000000 	nop
+ 178:	02050000 	0x2050000
+ 17c:	8000020c 	lb	zero,524(zero)
+ 180:	4b013f03 	c2	0x1013f03
+ 184:	4c83524b 	0x4c83524b
+ 188:	4f83be4b 	c3	0x183be4b
+ 18c:	bbbbbb83 	swr	k1,-17533(sp)
+ 190:	4bbc4b86 	c2	0x1bc4b86
+ 194:	4bbc4bbc 	c2	0x1bc4bbc
+ 198:	bc4b86bc 	cache	0xb,-31044(v0)
+ 19c:	bc4bbc4b 	cache	0xb,-17333(v0)
+ 1a0:	4b86bc4b 	c2	0x186bc4b
+ 1a4:	4bbc4bbc 	c2	0x1bc4bbc
+ 1a8:	85bc4bbc 	lh	gp,19388(t5)
+ 1ac:	85834b83 	lh	v1,19331(t4)
+ 1b0:	85844b4b 	lh	a0,19275(t4)
+ 1b4:	138413bb 	beq	gp,a0,50a4 <__isr_vec_space+0x5084>
+ 1b8:	854b4b85 	lh	t3,19333(t2)
+ 1bc:	8513bb86 	lh	s3,-17530(t0)
+ 1c0:	4b4b8513 	c2	0x14b8513
+ 1c4:	bbbb8584 	swr	k1,-31356(sp)
+ 1c8:	bbbbbbbb 	swr	k1,-17477(sp)
+ 1cc:	8413bcbb 	lh	s3,-17221(zero)
+ 1d0:	84138413 	lh	s3,-31725(zero)
+ 1d4:	84138413 	lh	s3,-31725(zero)
+ 1d8:	84138413 	lh	s3,-31725(zero)
+ 1dc:	4b4b8413 	c2	0x14b8413
+ 1e0:	4b838883 	c2	0x1838883
+ 1e4:	834c4b4b 	lb	t4,19275(k0)
+ 1e8:	4bbcbbbb 	c2	0x1bcbbbb
+ 1ec:	84134b4b 	lh	s3,19275(zero)
+ 1f0:	84134b4b 	lh	s3,19275(zero)
+ 1f4:	134b4b4b 	beq	k0,t3,12f24 <__isr_vec_space+0x12f04>
+ 1f8:	4b4b4b84 	c2	0x14b4b84
+ 1fc:	0402834c 	bltzl	zero,fffe0f30 <__entry+0x403e0f30>
+ 200:	Address 0x0000000000000200 is out of bounds.
+
+
+Disassembly of section .pdr:
+
+00000000 <.pdr>:
+   0:	9fc00144 	0x9fc00144
+	...
+  20:	9fc00000 	0x9fc00000
+	...
+  40:	80000000 	lb	zero,0(zero)
+	...
+  60:	80000200 	lb	zero,512(zero)
+	...
+  80:	80000200 	lb	zero,512(zero)
+	...
+  a0:	80000200 	lb	zero,512(zero)
+	...
+  c0:	80000200 	lb	zero,512(zero)
+	...
+  e0:	80000200 	lb	zero,512(zero)
+	...
+
+Disassembly of section .gnu.attributes:
+
+00000000 <.gnu.attributes>:
+   0:	00000f41 	0xf41
+   4:	756e6700 	jalx	5b99c00 <__memory_size+0x5b7a400>
+   8:	00070100 	sll	zero,a3,0x4
+   c:	03040000 	0x3040000

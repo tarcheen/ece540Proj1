@@ -19,12 +19,13 @@ localparam seg_d = 7'b1110111;
 localparam seg_e = 7'b1111011;
 localparam seg_f = 7'b1111101;
 localparam seg_g = 7'b1111110;
-localparam upH = 7'b1001000;
-localparam upL = 7'b1110001;
+localparam lows = 7'b0100100;
+localparam lowi = 7'b1111011;
 localparam upR = 7'b0001000;
 localparam lol = 7'b1111001;
 localparam lor = 7'b1111010;
-
+localparam lowg = 7'b0000100;
+localparam lown = 7'b0001000;
 localparam  blank = 7'b1111111;
 
 always @(data)
@@ -53,15 +54,16 @@ begin
         5'd20: seg = {data[5],seg_e};
         5'd21: seg = {data[5],seg_f};
         5'd22: seg = {data[5],seg_g};
-        5'd23: seg = {data[5],upH};
-        5'd24: seg = {data[5],upL};
+        5'd23: seg = {data[5],lows};
+        5'd24: seg = {data[5],lowi};
         5'd25: seg = {data[5],upR};
         5'd26: seg = {data[5],lol};
         5'd27: seg = {data[5],lor};
 		//user defined display items
-        5'd28: seg = {data[5],7'b1101010};//small n
-        5'd29: seg = {data[5],7'b1000100};//small y
-        5'd30: seg = {data[5],7'b1100011};//small u
+        5'd28: seg = {data[5],7'b1101010};//small n works
+        5'd29: seg = {data[5],7'b1000100};//small y works
+        5'd30: seg = {data[5],7'b1100011};//small u works
+        5'd31: seg = {data[5],lowg};//small g  works
         default: seg = {data[5],blank};
 	endcase
 		
