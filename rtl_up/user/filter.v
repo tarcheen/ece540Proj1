@@ -3,6 +3,7 @@ module filter (
 	input reset,	
 	input ack_flag,
 	input start_flag,
+	input color_sel,
 	input  [11:0] data_pixel,
 	output [16:0] address_to_read,
 	output reg [8:0] x_min, x_max, y_min, y_max,
@@ -16,23 +17,24 @@ localparam IDLE = 5'd1;
 localparam RESET_XY = 5'd2;	
 localparam ADDR_GEN = 5'd3;
 localparam COLOR_DETECT = 5'd4;
-localparam CHECK_PIX_OUT = 5'd5;
+localparam COLOR_DETECT_1 = 5'd5;
+localparam CHECK_PIX_OUT = 5'd6;
 
-localparam CHECK_X_MIN = 5'd6;
-localparam UPDATE_X_MIN = 5'd7;
+localparam CHECK_X_MIN = 5'd7;
+localparam UPDATE_X_MIN = 5'd8;
 
-localparam CHECK_Y_MIN = 5'd8;
-localparam UPDATE_Y_MIN = 5'd9;
+localparam CHECK_Y_MIN = 5'd9;
+localparam UPDATE_Y_MIN = 5'd10;
 
-localparam CHECK_X_MAX = 5'd10;
-localparam UPDATE_X_MAX = 5'd11;
+localparam CHECK_X_MAX = 5'd11;
+localparam UPDATE_X_MAX = 5'd12;
 
-localparam CHECK_Y_MAX = 5'd12;
-localparam UPDATE_Y_MAX = 5'd13;
+localparam CHECK_Y_MAX = 5'd13;
+localparam UPDATE_Y_MAX = 5'd14;
 
-localparam CHECK_MIN_MAX = 5'd14;
-localparam CHECK_DONE = 5'd15;
-localparam DONE = 5'd16;
+localparam CHECK_MIN_MAX = 5'd15;
+localparam CHECK_DONE = 5'd16;
+localparam DONE = 5'd17;
 
 reg [4:0] CURR_STATE, NEXT_STATE;
 
@@ -166,13 +168,21 @@ always@(*) begin
 		
 		ADDR_GEN:
 		begin
-			NEXT_STATE = COLOR_DETECT;
+			if(color_sel == 1'b0)
+				NEXT_STATE = COLOR_DETECT;
+			else
+				NEXT_STATE = COLOR_DETECT_1;
 		end
 		
 		COLOR_DETECT: 
 		begin
 			NEXT_STATE = CHECK_PIX_OUT;			
-		end	
+		end
+		
+		COLOR_DETECT_1: 
+		begin
+			NEXT_STATE = CHECK_PIX_OUT;			
+		end
 		
 		CHECK_PIX_OUT:
 		begin
@@ -303,6 +313,20 @@ begin
 		COLOR_DETECT: 
 		begin
 			if ((data_pixel[7:4] > 4'd12) && (data_pixel[11:8] < 4'd8 ) && (data_pixel[3:0] < 4'd8) )
+			begin
+				pixel_out = 1'b1;
+			end	
+			else
+			begin
+				pixel_out = 1'b0;
+			end		
+			done_flag = 1'b0;
+			error_flag = 1'b0; 
+		end
+		
+		COLOR_DETECT_1:
+		begin
+			if ((data_pixel[3:0] > 4'd12) && (data_pixel[11:8] < 4'd8 ) && (data_pixel[7:4] < 4'd8) )
 			begin
 				pixel_out = 1'b1;
 			end	

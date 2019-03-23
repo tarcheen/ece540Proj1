@@ -182,6 +182,95 @@ module mfp_nexys4_ddr(
 	
 	wire [2:0] superimpose_pixel;
 	
+	//For different color selection
+	wire [11:0] top_left_1;
+	wire [11:0] top_right_1;
+	wire [11:0] bottom_left_1;
+	wire [11:0] bottom_right_1;
+	
+	wire [11:0] top_left_2;
+	wire [11:0] top_right_2;
+	wire [11:0] bottom_left_2;
+	wire [11:0] bottom_right_2;
+	
+	wire [11:0] top_left_3;
+	wire [11:0] top_right_3;
+	wire [11:0] bottom_left_3;
+	wire [11:0] bottom_right_3;
+	
+	wire [11:0] top_left_4;
+	wire [11:0] top_right_4;
+	wire [11:0] bottom_left_4;
+	wire [11:0] bottom_right_4;
+	
+	assign top_left_1 = 12'hF00;
+	assign top_right_1 = 12'hFF0;
+	assign bottom_left_1 = 12'hF0F;
+	assign bottom_right_1 = 12'h0FF;
+	
+	assign top_left_2 = 12'hF0F;
+	assign top_right_2 = 12'h0FF;
+	assign bottom_left_2 = 12'hF00;
+	assign bottom_right_2 = 12'hFF0;
+	
+	assign top_left_3 = 12'hF80;
+	assign top_right_3 = 12'h08F;
+	assign bottom_left_3 = 12'h00F;
+	assign bottom_right_3 = 12'hFF0;
+	
+	assign top_left_4 = 12'hFF0;
+	assign top_right_4 = 12'hF80;
+	assign bottom_left_4 = 12'h08F;
+	assign bottom_right_4 = 12'h00F;
+	
+	wire [1:0] superimpose_sel;
+	
+	// assign superimpose_sel = {SW_DB[2],SW_DB[1]};
+	assign superimpose_sel = {PORT_IP_CTRL[2],PORT_IP_CTRL[1]};
+	
+	always@(*)
+	begin
+		case(superimpose_sel)
+			2'b00:
+			begin
+				top_left = top_left_1;
+				top_right = top_right_1;
+				bottom_left = bottom_left_1;
+				bottom_right = bottom_right_1;
+			end
+			
+			2'b01:
+			begin
+				top_left = top_left_2;
+				top_right = top_right_2;
+				bottom_left = bottom_left_2;
+				bottom_right = bottom_right_2;
+			end
+			
+			2'b10:
+			begin
+				top_left = top_left_3;
+				top_right = top_right_3;
+				bottom_left = bottom_left_3;
+				bottom_right = bottom_right_3;
+			end
+			
+			2'b11:
+			begin
+				top_left = top_left_4;
+				top_right = top_right_4;
+				bottom_left = bottom_left_4;
+				bottom_right = bottom_right_4;
+			end
+		endcase
+	end
+	
+	reg [11:0] top_left;
+	reg [11:0] top_right;
+	reg [11:0] bottom_left;
+	reg [11:0] bottom_right;
+	
+	
 	//instance of colorizer
 	//which actually takes care of coloring
 	//FIXME make changes in coloriser
@@ -192,21 +281,21 @@ module mfp_nexys4_ddr(
 		.op_pixel(frame_pixel),
 		.superimpose_pixel(superimpose_pixel),
 		
-		.top_left_r(4'b1111),
-		.top_left_g(4'b0000),
-		.top_left_b(4'b0000),
+		.top_left_r(top_left[11:8]),
+		.top_left_g(top_left[7:4]),
+		.top_left_b(top_left[3:0]),
 		
-		.top_right_r(4'b1111),
-		.top_right_g(4'b1111),
-		.top_right_b(4'b0000),
+		.top_right_r(top_right[11:8]),
+		.top_right_g(top_right[7:4]),
+		.top_right_b(top_right[3:0]),
 		
-		.bottom_left_r(4'b1111),
-		.bottom_left_g(4'b0000),
-		.bottom_left_b(4'b1111),
+		.bottom_left_r(bottom_left[11:8]),
+		.bottom_left_g(bottom_left[7:4]),
+		.bottom_left_b(bottom_left[3:0]),
 		
-		.bottom_right_r(4'b0000),
-		.bottom_right_g(4'b1111),
-		.bottom_right_b(4'b1111),
+		.bottom_right_r(bottom_right[11:8]),
+		.bottom_right_g(bottom_right[7:4]),
+		.bottom_right_b(bottom_right[3:0]),
 		
 		.red(VGA_R),
 		.green(VGA_G),
@@ -214,12 +303,17 @@ module mfp_nexys4_ddr(
 	);
 	
 	///TEMP Change by Pk, del to revert, filter module added
+	wire filter_sel;
+	//FIXME get it from AHB
+	// assign filter_sel = SW_DB[3];
+	assign filter_sel = PORT_IP_CTRL[3];
 	
 	filter filter(
 		.clk(clk_out_25MHZ),	
 		.reset(~CPU_RESETN_DB),	
 		.ack_flag(min_max_ack),
 		.start_flag(min_max_start),
+		.color_sel(filter_sel),
 		.data_pixel(filter_read_data),
 		.address_to_read(filter_read_addr),
 		.x_min(x_min),
@@ -230,6 +324,11 @@ module mfp_nexys4_ddr(
 		.error_flag(min_max_error)
 	);
 	
+	wire disable_overlap;
+	
+	// assign disable_overlap = SW_DB[0];
+	assign disable_overlap = PORT_IP_CTRL[0];
+	
 	overlap_image overlap_image(
 		.x_min(x_min)
 		,.x_max(x_max)
@@ -239,6 +338,7 @@ module mfp_nexys4_ddr(
 		,.y_cen(y_min_max_sum[9:1])
 		,.pixel_row(pixel_row)
 		,.pixel_column(pixel_column)
+		,.disable_overlap(disable_overlap)
 		,.swap_pixel(superimpose_pixel)
 	);
 	
@@ -307,8 +407,8 @@ module mfp_nexys4_ddr(
 		case(curr_state)
 			SM_RESET:
 			begin
-				next_state = SM_TAKE_PHOTO_START;
-				//next_state = SM_MIN_MAX_START;
+				// next_state = SM_TAKE_PHOTO_START;
+				next_state = SM_MIN_MAX_START;
 			end
 			
 			SM_TAKE_PHOTO_START:
@@ -361,8 +461,8 @@ module mfp_nexys4_ddr(
 			
 			SM_MIN_MAX_ACK_WAIT:
 			begin
-				next_state = SM_TAKE_PHOTO_START;
-				//next_state = SM_MIN_MAX_START;
+				// next_state = SM_TAKE_PHOTO_START;
+				next_state = SM_MIN_MAX_START;
 			end	
 			
 			SM_ERROR:
@@ -499,12 +599,13 @@ module mfp_nexys4_ddr(
 		endcase
 	end
 	
+	wire [7:0] PORT_IP_CTRL;
 	
 	wire capture_we_inter;
 	always@(*)
 	begin
-		capture_we = capture_we_inter & photo_en;
-		// capture_we = 1'b0;
+		// capture_we = capture_we_inter & photo_en;
+		capture_we = 1'b0;
 	end
 	
 	photo_sm photo_sm(
@@ -559,7 +660,7 @@ module mfp_nexys4_ddr(
                     .IO_CF(CF),
                     .IO_CG(CG),
                     .IO_DP(DP),
-					
+					.PORT_IP_CTRL(PORT_IP_CTRL),
                     .UART_RX(UART_TXD_IN));
           
 endmodule

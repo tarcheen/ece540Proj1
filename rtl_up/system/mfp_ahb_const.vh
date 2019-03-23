@@ -34,15 +34,9 @@
 `define H_SEG_LSB_IONUM  			(4'h2)
 `define H_SEG_DP_IONUM  			(4'h3)
 
-`define PORT_BOTINFO_ADDR  		(32'h1f80000C)
-`define PORT_BOTCTRL_ADDR  		(32'h1f800010)
-`define PORT_BOTUPDT_ADDR  		(32'h1f800014)
-`define PORT_INTACK_ADDR  		(32'h1f800018)
+`define PORT_IP_ADDR  				(32'h1f800010)
 
-`define PORT_BOTINFO_IONUM			(8'h0C)
-`define PORT_BOTCTRL_IONUM 			(8'h10)
-`define PORT_BOTUPDT_IONUM 			(8'h14)
-`define PORT_INTACK_IONUM  			(8'h18)
+`define PORT_IP_IONUM 				(8'h10)
 
 //---------------------------------------------------
 // RAM addresses
@@ -60,8 +54,8 @@
 
 `define H_SEG_ADDR_Match		(7'h7d)
 
-`define H_ROJO_ADDR_Match		(7'h7e)
-`define H_ROJO_ADDR_Upper_Match	(8'h08)
+`define H_IP_ADDR_Match			(7'h7e)
+`define H_IP_ADDR_Upper_Match	(8'h08)
 
 //---------------------------------------------------
 // AHB-Lite values used by MIPSfpga core

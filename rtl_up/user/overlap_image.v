@@ -27,35 +27,39 @@ module overlap_image(
 	input [8:0] 		y_cen,
 	input [11 :0] 		pixel_row,
 	input [11 :0] 		pixel_column,
+	input 				disable_overlap,
 	output	reg	[2 :0]	swap_pixel
 );
 
 always@(*)
 begin
-	if((pixel_column >= {3'b0,x_min}) && (pixel_column < {3'b0,x_cen}) 
-		&&(pixel_row >= {3'b0,y_min}) && (pixel_row < {3'b0,y_cen}))
-	begin
-		swap_pixel = 3'b001;
-	end
-	else if((pixel_column >= {3'b0,x_cen}) && (pixel_column < {3'b0,x_max}) 
-		&&(pixel_row >= {3'b0,y_min}) && (pixel_row < {3'b0,y_cen}))
-	begin
-		swap_pixel = 3'b010;
-	end
-	else if((pixel_column >= {3'b0,x_min}) && (pixel_column < {3'b0,x_cen}) 
-		&&(pixel_row >= {3'b0,y_cen}) && (pixel_row < {3'b0,y_max}))
-	begin
-		swap_pixel = 3'b011;
-	end
-	else if((pixel_column >= {3'b0,x_cen}) && (pixel_column < {3'b0,x_max})
-		&&(pixel_row >= {3'b0,y_cen}) && (pixel_row < {3'b0,y_max}))
-	begin
-		swap_pixel = 3'b100;
-	end
+	if(disable_overlap == 1'b0)
+		if((pixel_column >= {3'b0,x_min}) && (pixel_column < {3'b0,x_cen}) 
+			&&(pixel_row >= {3'b0,y_min}) && (pixel_row < {3'b0,y_cen}))
+		begin
+			swap_pixel = 3'b001;
+		end
+		else if((pixel_column >= {3'b0,x_cen}) && (pixel_column < {3'b0,x_max}) 
+			&&(pixel_row >= {3'b0,y_min}) && (pixel_row < {3'b0,y_cen}))
+		begin
+			swap_pixel = 3'b010;
+		end
+		else if((pixel_column >= {3'b0,x_min}) && (pixel_column < {3'b0,x_cen}) 
+			&&(pixel_row >= {3'b0,y_cen}) && (pixel_row < {3'b0,y_max}))
+		begin
+			swap_pixel = 3'b011;
+		end
+		else if((pixel_column >= {3'b0,x_cen}) && (pixel_column < {3'b0,x_max})
+			&&(pixel_row >= {3'b0,y_cen}) && (pixel_row < {3'b0,y_max}))
+		begin
+			swap_pixel = 3'b100;
+		end
+		else
+		begin
+			swap_pixel = 3'b000;
+		end
 	else
-	begin
 		swap_pixel = 3'b000;
-	end
 	/*
 	if((pixel_column >= {3'b0,x_min}) && (pixel_column < {3'b0,x_max}) 
 		&&(pixel_row >= {3'b0,y_min}) && (pixel_row < {3'b0,y_max}))
