@@ -1,14 +1,13 @@
 /*
-
  *  Hamed Mirlohi
- * 	Last Modified:
+ *  Box Detection and Image Replacement Final Project
+ * 	Last Modified: 3/22/2019
  *
  * 	Description:
+	Implented GUI using seven sagments and switches to control the menu.
  *  ============
  *  
-
 */
-
 
 # ======================
 # === Port Addresses ===
@@ -32,25 +31,23 @@ PORT_SEVENSEG_DP	= 0xbf70000c		# (o) 7 segment Decimal Point Display
 PORT_IP_CONTROL     = 0xbf800010
 
 
+ENABLE				= 0x01000E1C		# value for "Enable"
+BLUE				= 0x0B1A0000		# value for "Blue"
+
 .text
 .globl main
 main:
-				add	$23, $0, 0x01000E1C			# 1-En
-				add $20, $0, 0x0B1A0000			# initialize color select to Bl-0
+				add	$23, $0, ENABLE				// initialize color select to 1-En
+				add $20, $0, BLUE				// initialize color select to Bl-0
 
-				li 	$2, PORT_SEVENSEG_EN		# Enable 7sagments
+				li 	$2, PORT_SEVENSEG_EN		// Enable 7sagments, leave out 3rd and 6th sagment off
 				li 	$25, 0x24
 				sw	$25, 0($2)
-				li 	$2, PORT_SEVENSEG_LOW		# Write to Low and High 7sagments
+				li 	$2, PORT_SEVENSEG_LOW		// Write to Low and High 7sagments
 				sw  $23, 0($2)
 
 				li 	$2, PORT_SEVENSEG_HGH
 				sw	$20, 0($2)
-
-				li	$3, PORT_IP_CONTROL
-
-				li $2, PORT_SLSWTCH
-				lw $19, 0($2)					# current switch positions are saved
 
 # ==================
 # === Main  Loop ===
@@ -58,33 +55,19 @@ main:
 												
 main_L1:
 
-				#li	  $13, PORT_PBTNS
-				#lw	  $21, 0($13)
-				li	  $2, PORT_SLSWTCH
+				li	  $2, PORT_SLSWTCH		// load current positions of the switches
 				lw	  $21, 0($2)
-				sw	  $21, 0($2)
-
-/*				bne	  $21, $19, addr_swtch				// read and compare current switch positions with initial positions, if match, stay in the loop
-
-back_from_menu:
-
-				beq $0,$0,	main_L1					 	// end - main while loop
-				nop
-
-
-
-addr_swtch:*/
 
 				and $18, $21, 0x1			//masking enable/disable
 				and $17, $21, 0x6			//masking for image select
 				and $16, $21, 0x8			//masking for color
 
 
-				beq $18, $0, disable
+				beq $18, $0, disable		// check which switch was triggered
 				nop
 
 				en:
-				beq $18, 0x01,enable
+				beq $18, 0x1,enable
 				nop
 
 				img0:
@@ -113,7 +96,7 @@ addr_swtch:*/
 				nop
 
 
-				j	main_L1
+				j	main_L1						// no switch is triggered, back to main loop
 
 
 
@@ -123,7 +106,6 @@ disable:
 				or 	 $23, $8, 0x0d18
 				sw  $23, 0($2)
 				j en
-				//0xd18
 
 enable:
 				li	 $2, PORT_SEVENSEG_LOW
@@ -172,4 +154,4 @@ blue:
 				li 	$2, PORT_SEVENSEG_HGH
 				add $20, $0, 0x0B1A0000
 				sw	$20, 0($2)
-				j main_L1
+				j main_L1						// back to main loop
