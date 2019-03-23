@@ -33,7 +33,7 @@ module mfp_sys(
 					// input       			PORT_BOTUPDT,
 					// output     [7 :0] 		PORT_BOTCTRL,
 					// output 	   				PORT_INTACK,
-					
+					output 		[7  :0]         PORT_IP_CTRL,
                     input                   UART_RX);
 
 
@@ -324,6 +324,7 @@ module mfp_sys(
         // .PORT_BOTUPDT     		( PORT_BOTUPDT    			),
         // .PORT_BOTCTRL     		( PORT_BOTCTRL    			),
         // .PORT_INTACK      		( PORT_INTACK     			),
+        .PORT_IP_CTRL      		( PORT_IP_CTRL     			),
 		
         .UART_RX                (   UART_RX                 ), 
         .MFP_Reset_serialload   (   MFP_Reset_serialload    )

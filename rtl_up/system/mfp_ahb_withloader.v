@@ -27,6 +27,8 @@ module mfp_ahb_withloader (
 	output 						IO_CA, IO_CB, IO_CC, IO_CD, IO_CE, IO_CF, IO_CG,
 	output 						IO_DP,
 	
+	output 		[7  :0]         PORT_IP_CTRL,
+	
 	// for serial loading of memory using uart
     input         UART_RX,
 
@@ -136,7 +138,9 @@ module mfp_ahb_withloader (
         .IO_CE            ( IO_CE          	),
         .IO_CF            ( IO_CF          	),
         .IO_CG            ( IO_CG          	),
-        .IO_DP            ( IO_DP          	)
+        .IO_DP            ( IO_DP          	),
+		
+        .PORT_IP_CTRL     ( PORT_IP_CTRL          	)
 
     );
 
